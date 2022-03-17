@@ -1,5 +1,5 @@
 
-const PAGE2_STRINGS = {
+const PAGE_STRINGS = {
 	title:"pagina 2",
 	
 };
