@@ -10,6 +10,7 @@
 	  <script type="text/javascript" src="../../commons/js/routes.js"></script>
 	  <script type="text/javascript" src="../../commons/js/images.js"></script>
 	  <script type="text/javascript" src="./js/strings.js"></script>
+	  <script type="text/javascript" src="./js/referencesIds.js"></script>
   </head>
   <body>
     
@@ -23,12 +24,12 @@
     <script>
 		const myCommmonRoutes = loadMyRoutes("../../");
 		const myImagesRoutes = loadMyImagesRoutes("../../");
-		document.getElementById('title').innerHTML = PAGE_STRINGS.title;
-		document.getElementById("home").href = myCommmonRoutes.home;
-		document.getElementById("home").innerHTML =  COMMONS_STRINGS.goToHome;
-		document.getElementById("page2").href = myCommmonRoutes.page2; 
-		document.getElementById("page2").innerHTML = COMMONS_STRINGS.goToPageTwo; 
-		document.getElementById("mi_image").src = myImagesRoutes.image; 
+		document.getElementById(REFERENCE_ID.pageTitle).innerHTML = PAGE_STRINGS.title;
+		document.getElementById(REFERENCE_ID.goToHomeHref).href = myCommmonRoutes.home;
+		document.getElementById(REFERENCE_ID.goToHomeHref).innerHTML =  COMMONS_STRINGS.goToHome;
+		document.getElementById(REFERENCE_ID.goToPageTwoHref).href = myCommmonRoutes.page2; 
+		document.getElementById(REFERENCE_ID.goToPageTwoHref).innerHTML = COMMONS_STRINGS.goToPageTwo; 
+		document.getElementById(REFERENCE_ID.image).src = myImagesRoutes.image; 
 	</script>
   </body>
 </html>
