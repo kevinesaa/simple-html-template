@@ -5,12 +5,7 @@
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <title id="title"></title>
-	  <script type="text/javascript" src="../../commons/js/routes-util-builder.js"></script>
-	  <script type="text/javascript" src="../../commons/js/strings.js"></script>
-	  <script type="text/javascript" src="../../commons/js/routes.js"></script>
-	  <script type="text/javascript" src="../../commons/js/images.js"></script>
-	  <script type="text/javascript" src="./js/strings.js"></script>
-	  <script type="text/javascript" src="./js/referencesIds.js"></script>
+	  
   </head>
   <body>
     
@@ -22,6 +17,9 @@
     <br/>
     <img id="mi_image"/>
     <script>
+	/*
+		console.log(document.currentScript.src);
+
 		const myCommmonRoutes = loadMyRoutes("../../");
 		const myImagesRoutes = loadMyImagesRoutes("../../");
 		document.getElementById(REFERENCE_ID.pageTitle).innerHTML = PAGE_STRINGS.title;
@@ -30,6 +28,10 @@
 		document.getElementById(REFERENCE_ID.goToPageTwoHref).href = myCommmonRoutes.page2; 
 		document.getElementById(REFERENCE_ID.goToPageTwoHref).innerHTML = COMMONS_STRINGS.goToPageTwo; 
 		document.getElementById(REFERENCE_ID.image).src = myImagesRoutes.image; 
+		*/
 	</script>
+	<script type="text/javascript" src="../../main.js"></script>
+	<script type="text/javascript" src="./js/strings.js"></script>
+	<script type="text/javascript" src="./js/referencesIds.js"></script>
   </body>
 </html>
