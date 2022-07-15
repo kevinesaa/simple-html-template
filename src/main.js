@@ -1,13 +1,7 @@
-const SITE_PREFIX = "my-site";
-const STORE_USER_LANG = SITE_PREFIX + "_user-lang";
+
 const MAIN_SCRIPT_URI = document.currentScript.src;
 const MAIN_SCRIPT_PATH = MAIN_SCRIPT_URI.substring(0,MAIN_SCRIPT_URI.lastIndexOf("/")+1);
-const USER_LANG = localStorage.getItem(STORE_USER_LANG) || 
-    navigator.userLanguage || 
-	navigator.language || 
-	navigator.browserLanguage || 
-	navigator.systemLanguage; 
-
+/*
 let commonsStrings;
 let commonsRoutes;
 let commonImagesRoutes;
@@ -17,10 +11,10 @@ let actionOnRoutesLoadComplete;
 let actionOnImagesLoadComplete;
 
 const R = [
-    { route:"commons/js/strings.js", load:false },
-    { route:"commons/js/routes-util-builder.js", load:false },
-    { route:"commons/js/routes.js", load:false },
-    { route:"commons/js/images.js", load:false },
+    { route:"_commons/js/strings.js", load:false },
+    { route:"_commons/js/routes-util-builder.js", load:false },
+    { route:"_commons/js/routes.js", load:false },
+    { route:"_commons/js/images.js", load:false },
 ];
 
 function loadCommonResources() {
@@ -53,6 +47,7 @@ function scriptLoader(scriptRoute, onLoadCallback, onLoadFailCallback ) {
         }
     };
     script.onerror = function (){
+        console.log("fail to load " + scriptRoute);
         if(onLoadFailCallback) {
             onLoadFailCallback();
         }
@@ -66,7 +61,11 @@ function onLoadCommonResourcesComplete() {
     if(actionOnRoutesLoadComplete) {
         actionOnRoutesLoadComplete();
     }
-    //commonImagesRoutes = loadMyImagesRoutes(MAIN_SCRIPT_PATH);
+    commonImagesRoutes = loadMyImagesRoutes(MAIN_SCRIPT_PATH);
+    if(actionOnImagesLoadComplete) {
+        actionOnImagesLoadComplete();
+    }
+
     loadStrings(USER_LANG);
 }
 
@@ -91,11 +90,4 @@ function loadStrings(lang){
             }
     });
 }
-
-
-function main() 
-{
-    loadCommonResources();
-}
-
-main();
+*/
