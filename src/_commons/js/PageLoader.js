@@ -40,18 +40,18 @@ class PageModule {
 
     #commonsResourceToLoad = {
         
-        hasInternalRoutes:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasExternalRoutes:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasStrings:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasImages:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
+        internalRoutes:{has:false,loaded:false},
+        externalRoutes:{has:false,loaded:false},
+        strings:{has:false,loaded:false},
+        images:{has:false,loaded:false},
     }
 	
     #moduleResourceToLoad = {
-        hasReferenceId:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasInternalRoutes:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasExternalRoutes:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasStrings:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
-        hasImages:{has:false,loadFunc:this.#loadReferenceId,loaded:false},
+        referencesIds:{has:false,loaded:false},
+        internalRoutes:{has:false,loaded:false},
+        externalRoutes:{has:false,loaded:false},
+        strings:{has:false,loaded:false},
+        images:{has:false,loaded:false},
     }
     
     #loadCompletedListener;
@@ -62,6 +62,7 @@ class PageModule {
         this.#resourceWrapper = new ResourceWrapper();
         this.#resourceWrapper.commonResources = new Resources();
         this.#resourceWrapper.moduleResources = new Resources();
+        
     }
 
     load() {
@@ -69,28 +70,32 @@ class PageModule {
         this.#loadModuleResources();
     }
     
-    resourceLoaded(keyResource) {
-        console.log(keyResource);
+    resourceLoaded() {
+        const allCommonsLoaded = this. #checkResourcesLoaded(this.#commonsResourceToLoad);
+        const allModule = this. #checkResourcesLoaded(this.#moduleResourceToLoad);
+        if(allCommonsLoaded && allModule) {
+            
+        }
     }
 
     setHasReferencesId(isHas) {
-        this.#moduleResourceToLoad.hasReferenceId.has = isHas;
+        this.#moduleResourceToLoad.referencesIds.has = isHas;
     }
 
     setHasInternalRoutes(isHas){
-        this.#moduleResourceToLoad.hasInternalRoutes.has = isHas;
+        this.#moduleResourceToLoad.internalRoutes.has = isHas;
     }
     
     setHasExternalRoutes(isHas){
-        this.#moduleResourceToLoad.hasExternalRoutes.has = isHas;
+        this.#moduleResourceToLoad.externalRoutes.has = isHas;
     }
 
     setHasStrings(isHas){
-        this.#moduleResourceToLoad.hasStrings.has = isHas;
+        this.#moduleResourceToLoad.strings.has = isHas;
     }
 
     setHasImages(isHas){
-        this.#moduleResourceToLoad.hasImages.has = isHas;
+        this.#moduleResourceToLoad.images.has = isHas;
     }
 
     setOnLoadCompletedListener(onLoadCompleted) {
@@ -120,7 +125,7 @@ class PageModule {
         document.body.appendChild(script);
     }
 
-    loadInternalRoutesHelper(sourcesPaths, deepPath) 
+    static loadInternalRoutesHelper(deepPath,sourcesPaths) 
     {
         const srcKeys = Object.keys(sourcesPaths);
         
@@ -134,31 +139,56 @@ class PageModule {
     }
 
     #loadCommonsResources() {
-        this.#loadHelper(this.#commonsResourceToLoad);
+        const path = MAIN_SCRIPT_PATH +"/";
+        this.#loadHelper(path,this.#commonsResourceToLoad);
     }
 
     #loadModuleResources() {
-        this.#loadHelper(this.#moduleResourceToLoad);
+        const path = MY_MODULE_URI +"/js/";
+        this.#loadHelper(path,this.#moduleResourceToLoad);
     }
 
-    #loadHelper(resources) {
+    #loadHelper(pathFolder,resources) {
         const srcKeys = Object.keys(resources);
-        for(let i=0; i < srcKeys.length; i++) {
+        for(let i = 0; i < srcKeys.length; i++) {
             const key = srcKeys[i];
             const value = resources[key];
+            
             if(value.has) {
-                value.loadFunc();
+                const file = pathFolder + FILE_NAMES[key];
+                PageModule.scriptLoader(file,()=> {
+                    value.loaded = true;
+                    this.resourceLoaded();
+                },
+                this.#loadFailedListener);
             }
         }
     }
 
-    #loadReferenceId() {
-        const path = MY_MODULE_URI + "/js/" + FILE_NAMES.referencesIds;
-        console.log(this.#moduleResourceToLoad.hasReferenceId);
-        const resourceName = Object.getOwnPropertyNames("");
+    #checkResourcesLoaded(resources) {
+        let has = 0;
+        let loaded = 0;
+        const srcKeys = Object.keys(resources);
+        for(let i = 0; i < srcKeys.length; i++) {
+            const key = srcKeys[i];
+            const value = resources[key];
+            
+            if(value.has) {
+                has++;
+            }
+
+            if(value.loaded) {
+                loaded++;
+            }
+        }
         
-        PageModule.scriptLoader(path, () => {this.resourceLoaded(resourceName)});
-     }
+        if(has === 0) {
+            return true;
+        }
+        else {
+            return has === loaded;
+        }
+    }
 }
 
 class PageModuleBuilder {
