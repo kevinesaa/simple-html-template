@@ -132,8 +132,9 @@ class JsTextLoader extends JsLoader{
     #locateVarName;
     #locateRoute;
 
-    constructor(doc, scriptRoute, lang, defultcontainerVarName,hasLocateText, locateVarName) {
-        super(doc,scriptRoute,defultcontainerVarName);
+    constructor(doc, scriptRoute, defultcontainerVarName, hasLocateText, lang, locateVarName, loadCompletedListener, loadFailListener)
+    {
+        super(doc,scriptRoute,defultcontainerVarName,loadCompletedListener, loadFailListener);
         const path = this.myFileRoute.substring(0,this.myFileRoute.lastIndexOf("/") + 1);
         this.#locateRoute = path + "strings/" + lang + ".js";
         this.#locateVarName = locateVarName;
@@ -144,24 +145,26 @@ class JsTextLoader extends JsLoader{
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
             this.myResource = eval(this.myVarNameForLook);
             if(this.#hasLocateText) {
-                loadLocateTexts();
+                this.loadLocateTexts();
             }
             else {
                 this.myLoadCompleted = true;
+                this.onCompleted();
              }
-        });
+        }, this.onFail);
     }
 
     loadLocateTexts() {
 
         JsLoader.scriptLoader(this.myDocument,this.#locateRoute,(langScriptElement) => {
-
+            
             const a = eval(this.myVarNameForLook);
             const b = eval(this.#locateVarName);
             this.myResource = JsTextLoader.loadStringsHelper(a,b);
             this.myDocument.body.removeChild(langScriptElement);
             this.myLoadCompleted = true;
-        });
+            this.onCompleted();
+        }, this.onFail);
     }
 
     static loadStringsHelper(defaultStrings,locateStrings) {

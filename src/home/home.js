@@ -7,7 +7,8 @@ window.onload = function() {
 	navigator.language || 
 	navigator.browserLanguage || 
 	navigator.systemLanguage;
-    let t = new JsTextLoader(document,"./js/strings.js",myLang.substring(0,2),"HOME_STRINGS","LOCATE_HOME_STRINGS");
+    //doc, scriptRoute, defultcontainerVarName, hasLocateText, lang, locateVarName, loadCompletedListener, loadFailListener
+    let t = new JsTextLoader(document,"./js/strings.js","HOME_STRINGS",true,myLang.substring(0,2),"LOCATE_HOME_STRINGS");
     t.loadScript();
     
 }; 
