@@ -188,10 +188,20 @@ class JsTextLoader extends JsLoader{
 
 class JsInternalRouteLoader extends JsLoader {
     
+    #rootPath;
+
+    constructor(doc, scriptRoute,rootPath,containerVarName, loadCompletedListener, loadFailListener) {
+        super(doc,scriptRoute,containerVarName,loadCompletedListener, loadFailListener);
+        this.#rootPath = rootPath;
+    }
+
     loadScript() {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
-            
-        });
+            const internalPaths = eval(this.myVarNameForLook);
+            this.myResource = JsInternalRouteLoader.loadInternalRoutesHelper(this.#rootPath,internalPaths);
+            this.myLoadCompleted = true;
+            this.onCompleted();
+        }, this.onFail);
     }
     
     static loadInternalRoutesHelper(deepPath,sourcesPaths) 
