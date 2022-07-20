@@ -6,6 +6,3 @@ const COMMONS_IMAGES = {
 	
 };
 
-function loadMyImagesRoutes(deepPath){
-  return loadRoutesHelper(COMMONS_IMAGES, deepPath);
-}

@@ -2,7 +2,10 @@
 
 
 window.onload = function() {
-    let pageBuilder = new PageModuleBuilder()
+    
+    let t = new JsTextLoader(document,"./js/internal-routes.js");
+    t.loadScript();
+    let pageBuilder = new PageModuleBuilder(document)
     let page = pageBuilder
         .setHasReferencesId(true)
         .build();

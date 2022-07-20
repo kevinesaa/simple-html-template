@@ -6,7 +6,5 @@ const COMMONS_INTERNAL_ROUTES = {
 };
 
 
-function loadMyRoutes(deepPath){
-  return loadRoutesHelper(COMMONS_INTERNAL_ROUTES, deepPath);
-}
+
 

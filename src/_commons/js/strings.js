@@ -5,21 +5,5 @@ const DEFAULT_COMMONS_STRINGS = {
 	goToPageTwo:"Go to page two",
 };
 
-function loadStringsHelper(locateStrings){
-	
-	const srcKeys = Object.keys(locateStrings);
-	
-	const strings = {};
-	for(let i=0; i < srcKeys.length; i++) {
-	  const key = srcKeys[i];
-	  strings[key] =  DEFAULT_COMMONS_STRINGS[key];
-	  if(locateStrings[key]) 
-	  {
-		strings[key] = locateStrings[key];
-	  }
-	}
-	
-	return strings;
-}
 
 

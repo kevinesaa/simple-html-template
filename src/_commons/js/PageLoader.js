@@ -1,4 +1,5 @@
 
+
 const SITE_PREFIX = "my-site";
 const STORE_USER_LANG = SITE_PREFIX + "_user-lang";
 
@@ -13,7 +14,8 @@ const USER_LANG = localStorage.getItem(STORE_USER_LANG) ||
     navigator.userLanguage || 
 	navigator.language || 
 	navigator.browserLanguage || 
-	navigator.systemLanguage; 
+	navigator.systemLanguage;
+    
 
 const FILE_NAMES =  {
     referencesIds:"referencesIds.js",
@@ -22,6 +24,7 @@ const FILE_NAMES =  {
     images:"images.js",
     strings:"strings.js",
 }
+
 
 class Resources {
     referencesId;
@@ -34,6 +37,120 @@ class Resources {
 class ResourceWrapper {
     commonResources;
     moduleResources;
+}
+
+class JsLoader {
+
+    #document;
+    #loadComplete;
+    #scriptFileRoute;
+    
+    constructor(doc, scriptRoute) {
+        this.#document = doc;
+        this.#scriptFileRoute = scriptRoute;
+        this.#loadComplete = false;
+    }
+    
+    get myDocument() {
+        return this.#document;
+    }
+
+    get myFileRoute() {
+        return this.#scriptFileRoute;
+    }
+    
+    get myLoadCompleted() {
+        return this.#loadComplete;
+    }
+
+    set myLoadCompleted(completed) {
+        this.#loadComplete = completed;
+    }
+
+    loadScript() {
+        JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
+            this.myLoadCompleted = true;
+        });
+    }
+
+    static scriptLoader(document, scriptRoute, onLoadCallback, onLoadFailCallback ) 
+    {
+        let script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = scriptRoute;
+        script.onload = function() {
+            if(onLoadCallback) {
+                onLoadCallback(script);
+            }
+        };
+        script.onerror = function () {
+            console.log("fail to load " + scriptRoute);
+            if(onLoadFailCallback) {
+                onLoadFailCallback();
+            }
+        };
+        document.body.appendChild(script);
+    }
+}
+
+class JsTextLoader extends JsLoader{
+    
+    #locateRoute;
+    #resource;
+
+    constructor(doc, scriptRoute, lang) {
+        super(doc,scriptRoute);
+        const path = this.myFileRoute.substring(0,this.myFileRoute.lastIndexOf("/") + 1);
+        this.#locateRoute = path + "strings/" + lang + ".js";
+     }
+
+    loadScript() {
+        JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
+            
+            JsLoader.scriptLoader(this.myDocument,this.#locateRoute,() => {
+                this.myLoadCompleted = true;
+                
+            },
+            () => {
+
+            });
+        });
+    }
+
+    static loadStringsHelper(defaultStrings,locateStrings) {
+	
+        const srcKeys = Object.keys(locateStrings);
+        
+        const strings = {};
+        for(let i = 0; i < srcKeys.length; i++) {
+          const key = srcKeys[i];
+          strings[key] =  defaultStrings[key];
+          if(locateStrings[key]) 
+          {
+            strings[key] = locateStrings[key];
+          }
+        }
+        
+        return strings;
+    }
+    
+}
+
+class JsInternalRouteLoader extends JsLoader {
+    
+    
+    static loadInternalRoutesHelper(deepPath,sourcesPaths) 
+    {
+        const srcKeys = Object.keys(sourcesPaths);
+        
+        const routes = {};
+        for(let i = 0; i < srcKeys.length; i++) {
+          const key = srcKeys[i];
+          routes[key] = deepPath + sourcesPaths[key];
+        }
+        
+        return routes;
+    }
 }
 
 class PageModule {
@@ -57,12 +174,13 @@ class PageModule {
     #loadCompletedListener;
     #loadFailedListener;
     #resourceWrapper;
-    
-    constructor() {
+    #myDocument;
+
+    constructor(document) {
         this.#resourceWrapper = new ResourceWrapper();
         this.#resourceWrapper.commonResources = new Resources();
         this.#resourceWrapper.moduleResources = new Resources();
-        
+        this.#myDocument = document;
     }
 
     load() {
@@ -74,7 +192,7 @@ class PageModule {
         const allCommonsLoaded = this. #checkResourcesLoaded(this.#commonsResourceToLoad);
         const allModule = this. #checkResourcesLoaded(this.#moduleResourceToLoad);
         if(allCommonsLoaded && allModule) {
-            
+
         }
     }
 
@@ -105,38 +223,6 @@ class PageModule {
     setOnLoadFailListener(onFail) {
         this.#loadFailedListener = onFail;
     }
-    
-    static scriptLoader(scriptRoute, onLoadCallback, onLoadFailCallback ) 
-    {
-        let script = document.createElement("script");
-        script.type = "text/javascript";
-        script.src = scriptRoute;
-        script.onload = function() {
-            if(onLoadCallback) {
-                onLoadCallback(script);
-            }
-        };
-        script.onerror = function (){
-            console.log("fail to load " + scriptRoute);
-            if(onLoadFailCallback) {
-                onLoadFailCallback();
-            }
-        };
-        document.body.appendChild(script);
-    }
-
-    static loadInternalRoutesHelper(deepPath,sourcesPaths) 
-    {
-        const srcKeys = Object.keys(sourcesPaths);
-        
-        const routes = {};
-        for(let i=0; i < srcKeys.length; i++) {
-          const key = srcKeys[i];
-          routes[key] = deepPath + sourcesPaths[key];
-        }
-        
-        return routes;
-    }
 
     #loadCommonsResources() {
         const path = MAIN_SCRIPT_PATH +"/";
@@ -156,7 +242,7 @@ class PageModule {
             
             if(value.has) {
                 const file = pathFolder + FILE_NAMES[key];
-                PageModule.scriptLoader(file,()=> {
+                JsLoader.scriptLoader(this.#myDocument,file,()=> {
                     value.loaded = true;
                     this.resourceLoaded();
                 },
@@ -195,8 +281,8 @@ class PageModuleBuilder {
     
     #pageModule;
 
-    constructor() {
-        this.#pageModule = new PageModule();
+    constructor(document) {
+        this.#pageModule = new PageModule(document);
     }
 
     build() {
