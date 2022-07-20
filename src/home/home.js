@@ -2,12 +2,12 @@
 
 
 window.onload = function() {
-    
-    let t = new JsTextLoader(document,"./js/internal-routes.js");
+    const myLang = localStorage.getItem(STORE_USER_LANG) || 
+    navigator.userLanguage || 
+	navigator.language || 
+	navigator.browserLanguage || 
+	navigator.systemLanguage;
+    let t = new JsTextLoader(document,"./js/strings.js",myLang.substring(0,2),"HOME_STRINGS","LOCATE_HOME_STRINGS");
     t.loadScript();
-    let pageBuilder = new PageModuleBuilder(document)
-    let page = pageBuilder
-        .setHasReferencesId(true)
-        .build();
-    page.load();
+    
 }; 

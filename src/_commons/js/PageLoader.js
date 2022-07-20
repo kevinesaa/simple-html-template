@@ -44,10 +44,17 @@ class JsLoader {
     #document;
     #loadComplete;
     #scriptFileRoute;
-    
-    constructor(doc, scriptRoute) {
+    #containerVarName;
+    #resource;
+    #loadCompleteListener;
+    #loadFailListener;
+
+    constructor(doc, scriptRoute,containerVarName, loadCompletedListener, loadFailListener) {
         this.#document = doc;
         this.#scriptFileRoute = scriptRoute;
+        this.#containerVarName = containerVarName;
+        this.#loadCompleteListener = loadCompletedListener;
+        this.#loadFailListener = loadFailListener;
         this.#loadComplete = false;
     }
     
@@ -67,10 +74,36 @@ class JsLoader {
         this.#loadComplete = completed;
     }
 
+    get myVarNameForLook() {
+        return this.#containerVarName;
+    }
+
+    get myResource() {
+        return this.#resource;
+    }
+
+    set myResource(resource) {
+        this.#resource = resource;
+    }
+
+    onCompleted() {
+        if(this.#loadCompleteListener) {
+            this.#loadCompleteListener();
+        }
+    }
+    
+    onFail() {
+        if(this.#loadFailListener) {
+            this.#loadFailListener();
+        }
+    }
+
     loadScript() {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
+            this.myResource = eval(this.myVarNameForLook);
             this.myLoadCompleted = true;
-        });
+            this.onCompleted();
+        }, this.onFail);
     }
 
     static scriptLoader(document, scriptRoute, onLoadCallback, onLoadFailCallback ) 
@@ -95,25 +128,39 @@ class JsLoader {
 
 class JsTextLoader extends JsLoader{
     
+    #hasLocateText;
+    #locateVarName;
     #locateRoute;
-    #resource;
 
-    constructor(doc, scriptRoute, lang) {
-        super(doc,scriptRoute);
+    constructor(doc, scriptRoute, lang, defultcontainerVarName,hasLocateText, locateVarName) {
+        super(doc,scriptRoute,defultcontainerVarName);
         const path = this.myFileRoute.substring(0,this.myFileRoute.lastIndexOf("/") + 1);
         this.#locateRoute = path + "strings/" + lang + ".js";
+        this.#locateVarName = locateVarName;
+        this.#hasLocateText = hasLocateText;
      }
 
     loadScript() {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
-            
-            JsLoader.scriptLoader(this.myDocument,this.#locateRoute,() => {
+            this.myResource = eval(this.myVarNameForLook);
+            if(this.#hasLocateText) {
+                loadLocateTexts();
+            }
+            else {
                 this.myLoadCompleted = true;
-                
-            },
-            () => {
+             }
+        });
+    }
 
-            });
+    loadLocateTexts() {
+
+        JsLoader.scriptLoader(this.myDocument,this.#locateRoute,(langScriptElement) => {
+
+            const a = eval(this.myVarNameForLook);
+            const b = eval(this.#locateVarName);
+            this.myResource = JsTextLoader.loadStringsHelper(a,b);
+            this.myDocument.body.removeChild(langScriptElement);
+            this.myLoadCompleted = true;
         });
     }
 
@@ -138,6 +185,11 @@ class JsTextLoader extends JsLoader{
 
 class JsInternalRouteLoader extends JsLoader {
     
+    loadScript() {
+        JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
+            
+        });
+    }
     
     static loadInternalRoutesHelper(deepPath,sourcesPaths) 
     {
