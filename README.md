@@ -21,4 +21,4 @@ Do you want to help us? Excellent! Take a look at the [guidelines](CONTRIBUTING.
 <a name="license"/>
 
 ### Licence
-All files in this repository are licensed under the **Work in progress** license. See more license details [here](LICENSE).
+All files in this repository are licensed under the **MIT No Attribution** license. See more license details [here](LICENSE).

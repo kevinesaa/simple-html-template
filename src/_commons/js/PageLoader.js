@@ -238,13 +238,18 @@ class PageModule {
     
     #loadCompletedListener;
     #loadFailedListener;
-    #resourceWrapper;
+    
     #myDocument;
+    //JsLoader referencesIds;
+    //JsLoader externalRoutes;
+    //JsInternalRouteLoader images;
+    //JsInternalRouteLoader internalRoutes;
+    //JsTextLoader strings;
 
     constructor(document) {
-        this.#resourceWrapper = new ResourceWrapper();
-        this.#resourceWrapper.commonResources = new Resources();
-        this.#resourceWrapper.moduleResources = new Resources();
+        
+        
+        
         this.#myDocument = document;
     }
 
@@ -254,8 +259,8 @@ class PageModule {
     }
     
     resourceLoaded() {
-        const allCommonsLoaded = this. #checkResourcesLoaded(this.#commonsResourceToLoad);
-        const allModule = this. #checkResourcesLoaded(this.#moduleResourceToLoad);
+        const allCommonsLoaded = this.#checkResourcesLoaded(this.#commonsResourceToLoad);
+        const allModule = this.#checkResourcesLoaded(this.#moduleResourceToLoad);
         if(allCommonsLoaded && allModule) {
 
         }
