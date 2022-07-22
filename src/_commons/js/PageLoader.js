@@ -3,6 +3,9 @@
 const SITE_PREFIX = "my-site";
 const STORE_USER_LANG = SITE_PREFIX + "_user-lang";
 
+const PAGE_LOADER_URI = document.currentScript.src;
+const PAGE_LOADER_PATH = PAGE_LOADER_URI.substring(0,PAGE_LOADER_URI.lastIndexOf("/"));
+
 const MY_URI = window.location.pathname;
 const MY_MODULE_URI = MY_URI.substring(0,MY_URI.lastIndexOf("/"));
 const MY_MODULE_NAME = MY_URI.substring( MY_URI.substring(0,MY_URI.lastIndexOf("/")+1).lastIndexOf("/")+1, MY_URI.lastIndexOf("/"));
@@ -26,6 +29,7 @@ class JsLoader {
 
     #document;
     #loadComplete;
+    #loadFail;
     #scriptFileRoute;
     #containerVarName;
     #resource;
@@ -39,6 +43,7 @@ class JsLoader {
         this.#loadCompleteListener = loadCompletedListener;
         this.#loadFailListener = loadFailListener;
         this.#loadComplete = false;
+        this.#loadFail = false;
     }
     
     get myDocument() {
@@ -53,8 +58,8 @@ class JsLoader {
         return this.#loadComplete;
     }
 
-    set myLoadCompleted(completed) {
-        this.#loadComplete = completed;
+    get myLoadFail() {
+        return this.#loadFail;
     }
 
     get myVarNameForLook() {
@@ -68,14 +73,20 @@ class JsLoader {
     set myResource(resource) {
         this.#resource = resource;
     }
+    
+    set onCompletedListener(listener) {
+        this.#loadCompleteListener = listener;
+    }
 
     onCompleted() {
+        this.#loadComplete = true;
         if(this.#loadCompleteListener) {
             this.#loadCompleteListener();
         }
     }
     
     onFail() {
+        this.#loadFail = true;
         if(this.#loadFailListener) {
             this.#loadFailListener();
         }
@@ -84,7 +95,6 @@ class JsLoader {
     loadScript() {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
             this.myResource = eval(this.myVarNameForLook);
-            this.myLoadCompleted = true;
             this.onCompleted();
         }, this.onFail);
     }
@@ -131,7 +141,6 @@ class JsTextLoader extends JsLoader{
                 this.loadLocateTexts();
             }
             else {
-                this.myLoadCompleted = true;
                 this.onCompleted();
              }
         }, this.onFail);
@@ -145,7 +154,6 @@ class JsTextLoader extends JsLoader{
             const b = eval(this.#locateVarName);
             this.myResource = JsTextLoader.loadStringsHelper(a,b);
             this.myDocument.body.removeChild(langScriptElement);
-            this.myLoadCompleted = true;
             this.onCompleted();
         }, this.onFail);
     }
@@ -182,7 +190,6 @@ class JsInternalRouteLoader extends JsLoader {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
             const internalPaths = eval(this.myVarNameForLook);
             this.myResource = JsInternalRouteLoader.loadInternalRoutesHelper(this.#rootPath,internalPaths);
-            this.myLoadCompleted = true;
             this.onCompleted();
         }, this.onFail);
     }
@@ -207,33 +214,30 @@ class PageModule {
     #loadCompletedListener;
     #loadFailedListener;
     
+    #modulesToLoad;
     #myDocument;
     
     constructor(document) {
-        
-        
-        
+
         this.#myDocument = document;
     }
 
-    setHasReferencesId(isHas) {
-        
+    loadPage() {
+        if(this.#modulesToLoad.length == 0) {
+            if(this.#loadCompletedListener) {
+                this.#loadCompletedListener();
+            }
+        }
+        else {
+            for(let i = 0; i < this.#modulesToLoad.length; i++) {
+                this.#modulesToLoad[i].onCompletedListener = this.checkLoads;
+                this.#modulesToLoad[i].loadScript();
+            }
+        }
     }
 
-    setHasInternalRoutes(isHas){
-        
-    }
-    
-    setHasExternalRoutes(isHas){
-        
-    }
-
-    setHasStrings(isHas){
-        
-    }
-
-    setHasImages(isHas){
-        
+    setModulesToLoad(modulesToLoad) {
+        this.#modulesToLoad = modulesToLoad;
     }
 
     setOnLoadCompletedListener(onLoadCompleted) {
@@ -244,43 +248,69 @@ class PageModule {
         this.#loadFailedListener = onFail;
     }
 
-    
+    checkLoads() {
+        console.log("hola");
+    }
 }
 
 class PageModuleBuilder {
     
-    #pageModule;
+    #myDocument;
+    #projectRootDirectory;
+    #moduleDirectory;
 
-    constructor(document) {
-        this.#pageModule = new PageModule(document);
+    #properties = { referencesId: { has: false, varContainer:undefined,path:undefined}
+    };
+
+    constructor(document, mainScriptPath, modulePath) {
+        
+        this.#projectRootDirectory = mainScriptPath;
+        this.#moduleDirectory = modulePath;
+        this.#myDocument = document;
+        
     }
 
-    build() {
-        return this.#pageModule;
+    build(onLoadCompletedListener,loadFailedListener) {
+
+        const doc =  this.#myDocument ?  this.#myDocument : document;
+        const module = this.#moduleDirectory ? this.#moduleDirectory : MY_MODULE_URI + "/js";
+        const pageModule = new PageModule(doc);
+        const modulesToLoad = [];
+        if(this.#properties.referencesId.has) {
+            const varName = this.#properties.referencesId.varContainer ? this.#properties.referencesId.varContainer : "REFERENCE_ID";
+            const scriptFile = this.#properties.referencesId.path ? this.#properties.referencesId.path : module + "/" + FILE_NAMES.referencesIds;
+            const referencesIds = new JsLoader(doc,scriptFile,varName);
+            modulesToLoad.push(referencesIds);
+        }
+        pageModule.setModulesToLoad(modulesToLoad);
+        return pageModule;
     }
 
-    setHasReferencesId(isHas) {
-        this.#pageModule.setHasReferencesId(isHas);
+    setHasReferencesId(isHas, varNameContainer, filePath) {
+        
+        this.#properties.referencesId.has = isHas;
+        this.#properties.referencesId.varContainer = varNameContainer;
+        this.#properties.referencesId.path = filePath;
         return this;
     }
 
     setHasInternalRoutes(isHas){
-        this.#pageModule.setHasInternalRoutes(isHas);
+        
         return this;
     }
     
     setHasExternalRoutes(isHas){
-        this.#pageModule.setHasExternalRoutes(isHas);
+        
         return this;
     }
 
     setHasStrings(isHas){
-        this.#pageModule.setHasStrings(isHas);
+        
         return this;
     }
 
     setHasImages(isHas){
-        this.#pageModule.setHasImages(isHas);
+        
         return this;
     }
 
@@ -288,4 +318,36 @@ class PageModuleBuilder {
         
         return this;
     }
+
+    addCommonReferencesId(add) {
+
+        return this;
+    }
+    
+
+    addCommonExternalRoutes(add) {
+
+        return this;
+    }
+    
+    addCommonInternalRoutes(add) {
+
+        return this;
+    }
+    
+    addCommonImages(add) {
+
+        return this;
+    }
+    
+    addCommonStrings(add) {
+        
+        return this;
+    }
+    
+    addCommonLocateStrings(add) {
+        
+        return this;
+    }
+    
 }

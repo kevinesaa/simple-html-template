@@ -2,18 +2,14 @@
 
 
 window.onload = function() {
-    const myLang = localStorage.getItem(STORE_USER_LANG) || 
-    navigator.userLanguage || 
-	navigator.language || 
-	navigator.browserLanguage || 
-	navigator.systemLanguage;
+    
 
     const commonExternalRoutes = new JsLoader(document,"../_commons/js/external-routes.js","COMMONS_EXTERNAL_ROUTES",()=>{
         console.log(commonExternalRoutes.myResource);
     });
     commonExternalRoutes.loadScript();
 
-    const commonTexts = new JsTextLoader(document,"../_commons/js/strings.js","COMMONS_STRINGS",true,myLang.substring(0,2),"COMMON_LOCATE_STRINGS",() => {
+    const commonTexts = new JsTextLoader(document,"../_commons/js/strings.js","COMMONS_STRINGS",true,USER_LANG.substring(0,2),"COMMON_LOCATE_STRINGS",() => {
         console.log(commonTexts.myResource);
     });
     commonTexts.loadScript();
@@ -29,17 +25,15 @@ window.onload = function() {
     commonImages.loadScript();
 
     //home resources
-    const referencesIds = new JsLoader(document,"./js/referencesIds.js","REFERENCE_ID",() => {
-        console.log(referencesIds.myResource);
-    });
-    referencesIds.loadScript();
+    
+    
 
     const homeExternalRoutes = new JsLoader(document,"./js/external-routes.js","HOME_EXTERNAL_ROUTES",() => {
         console.log(homeExternalRoutes.myResource);
     });
     homeExternalRoutes.loadScript();
 
-    const homeTexts = new JsTextLoader(document,"./js/strings.js","HOME_STRINGS",true,myLang.substring(0,2),"LOCATE_HOME_STRINGS",() => {
+    const homeTexts = new JsTextLoader(document,"./js/strings.js","HOME_STRINGS",true,USER_LANG.substring(0,2),"LOCATE_HOME_STRINGS",() => {
         console.log(homeTexts.myResource);
     });
     homeTexts.loadScript();
@@ -54,13 +48,18 @@ window.onload = function() {
     });
     homeImages.loadScript();
 
-    const builderPage = new PageModuleBuilder(document,MAIN_SCRIPT_PATH)
-                                .setHasReferencesId(false,"REFERENCE_ID")
-                                .setHasExternalRoutes(false,"COMMONS_EXTERNAL_ROUTES")
-                                .setHasInternalRoutes(false,"COMMONS_INTERNAL_ROUTES")
-                                .setHasImages(false,"COMMONS_IMAGES")
-                                .setHasStrings(false,"COMMONS_STRINGS")
-                                .setHasLocateStrings(false,myLang.substring(0,2),"LOCATE_COMMONS_STRINGS");
+    const builderPage = new PageModuleBuilder(document, MAIN_SCRIPT_PATH, MY_MODULE_URI+"/js")
+                                .setHasReferencesId(true)//,"REFERENCE_ID","/referencesIds.js")
+                                .setHasExternalRoutes(false,"HOME_EXTERNAL_ROUTES","/external-routes.js")
+                                .setHasInternalRoutes(false,"HOME_ROUTES","/internal-routes.js")
+                                .setHasImages(false,"HOME_IMAGES","/images.js")
+                                .setHasStrings(false,"HOME_STRINGS","/strings.js")
+                                .setHasLocateStrings(false,USER_LANG.substring(0,2),"LOCATE_HOME_STRINGS","/strings/"+USER_LANG.substring(0,2)+".js")
+                                .addCommonExternalRoutes(false,"COMMONS_EXTERNAL_ROUTES","../_commons/js/external-routes.js")
+                                .addCommonInternalRoutes(false,"COMMONS_INTERNAL_ROUTES","../_commons/js/internal-routes.js")
+                                .addCommonImages(false,"COMMONS_IMAGES","../_commons/js/images.js")
+                                .addCommonStrings(false,"COMMONS_STRINGS","../_commons/js/strings.js")
+                                .addCommonLocateStrings(false,"COMMON_LOCATE_STRINGS","../_commons/js/strings/"+USER_LANG.substring(0,2)+".js");
     
     const page = builderPage.build(
         //on completed load listener
@@ -68,4 +67,5 @@ window.onload = function() {
         //on fail load listener
         ()=> {}
     );
+    page.loadPage();
 }; 
