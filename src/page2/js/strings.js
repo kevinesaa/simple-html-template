@@ -1,5 +1,5 @@
 
-const PAGE_STRINGS = {
+const MODULE_STRINGS = {
 	title:"pagina 2",
 	
 };

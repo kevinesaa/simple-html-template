@@ -1,4 +1,4 @@
-const REFERENCE_ID = {
+const MODULE_REFERENCE_ID = {
     pageTitle:"title",
 	goToHomeHref:"home",
 	goToPageOneHref:"page1",

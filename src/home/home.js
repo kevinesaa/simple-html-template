@@ -1,5 +1,13 @@
 
-
+function showPage(R) {
+    
+    document.getElementById(R.MODULE_REFERENCE_ID.homeTitle).innerHTML =  R.MODULE_STRINGS.homeTitle;	
+	document.getElementById(R.MODULE_REFERENCE_ID.goToPageOneHref).href = R.COMMONS_INTERNAL_ROUTES.page1; 
+	document.getElementById(R.MODULE_REFERENCE_ID.goToPageOneHref).innerHTML = R.COMMONS_STRINGS.goToPageOne; 
+	document.getElementById(R.MODULE_REFERENCE_ID.goToPageTwoHref).href = R.COMMONS_INTERNAL_ROUTES.page2; 
+	document.getElementById(R.MODULE_REFERENCE_ID.goToPageTwoHref).innerHTML = R.COMMONS_STRINGS.goToPageTwo; 
+	document.getElementById(R.MODULE_REFERENCE_ID.image).src = R.COMMONS_IMAGES.image; 
+}
 
 window.onload = function() {
     
@@ -17,12 +25,7 @@ window.onload = function() {
                                 .addCommonStrings(true)
                                 .addCommonLocateStrings(true);
     
-    const page = builderPage.build(
-        //on completed load listener
-        (resources)=> {
-            console.log(resources);
-            console.log(resources.MODULE_REFERENCE_ID);
-        },
+    const page = builderPage.build(showPage,
         //on fail load listener
         ()=> {
             console.log("something is wrong");
