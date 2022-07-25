@@ -1,7 +1,7 @@
 
 
 
-const HOME_IMAGES = {
+const MODULE_IMAGES = {
 	image:"/src/_commons/img/ic_coin.png"
 	
 };

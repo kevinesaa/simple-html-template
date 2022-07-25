@@ -3,7 +3,7 @@
 
 window.onload = function() {
     
-
+/*
     const commonExternalRoutes = new JsLoader(document,"../_commons/js/external-routes.js","COMMONS_EXTERNAL_ROUTES",()=>{
         console.log(commonExternalRoutes.myResource);
     });
@@ -23,38 +23,16 @@ window.onload = function() {
         console.log(commonImages.myResource);
     });
     commonImages.loadScript();
+*/
 
-    //home resources
-    
-    
-
-    const homeExternalRoutes = new JsLoader(document,"./js/external-routes.js","HOME_EXTERNAL_ROUTES",() => {
-        console.log(homeExternalRoutes.myResource);
-    });
-    homeExternalRoutes.loadScript();
-
-    const homeTexts = new JsTextLoader(document,"./js/strings.js","HOME_STRINGS",true,USER_LANG.substring(0,2),"LOCATE_HOME_STRINGS",() => {
-        console.log(homeTexts.myResource);
-    });
-    homeTexts.loadScript();
-
-    const homeInternalRoutes = new JsInternalRouteLoader(document,"./js/internal-routes.js",MAIN_SCRIPT_PATH,"HOME_ROUTES",() => {
-        console.log(homeInternalRoutes.myResource);
-    });
-    homeInternalRoutes.loadScript();
-
-    const homeImages = new JsInternalRouteLoader(document,"./js/images.js",MAIN_SCRIPT_PATH,"HOME_IMAGES",() => {
-        console.log(homeImages.myResource);
-    });
-    homeImages.loadScript();
-
-    const builderPage = new PageModuleBuilder(document, MAIN_SCRIPT_PATH, MY_MODULE_URI+"/js")
-                                .setHasReferencesId(true)//,"REFERENCE_ID","/referencesIds.js")
-                                .setHasExternalRoutes(false,"HOME_EXTERNAL_ROUTES","/external-routes.js")
-                                .setHasInternalRoutes(false,"HOME_ROUTES","/internal-routes.js")
-                                .setHasImages(false,"HOME_IMAGES","/images.js")
-                                .setHasStrings(false,"HOME_STRINGS","/strings.js")
-                                .setHasLocateStrings(false,USER_LANG.substring(0,2),"LOCATE_HOME_STRINGS","/strings/"+USER_LANG.substring(0,2)+".js")
+    const builderPage = new PageModuleBuilder(document, MAIN_SCRIPT_PATH)
+                                .setHasReferencesId(true)
+                                .setHasExternalRoutes(true)
+                                .setHasInternalRoutes(true)
+                                .setHasImages(true)
+                                .setHasStrings(true)
+                                .setHasLocateStrings(true)
+                                .addCommonReferencesId(true)
                                 .addCommonExternalRoutes(false,"COMMONS_EXTERNAL_ROUTES","../_commons/js/external-routes.js")
                                 .addCommonInternalRoutes(false,"COMMONS_INTERNAL_ROUTES","../_commons/js/internal-routes.js")
                                 .addCommonImages(false,"COMMONS_IMAGES","../_commons/js/images.js")

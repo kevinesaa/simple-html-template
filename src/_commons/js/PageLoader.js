@@ -17,13 +17,31 @@ const USER_LANG = localStorage.getItem(STORE_USER_LANG) ||
 	navigator.systemLanguage;
     
 
-const FILE_NAMES =  {
-    referencesIds:"referencesIds.js",
-    externalRoutes:"external-routes.js",
-    internalRoutes:"internal-routes.js",
-    images:"images.js",
-    strings:"strings.js",
+const DEFAULT_FILE_NAMES =  {
+    referencesIds: "referencesIds.js",
+    externalRoutes: "external-routes.js",
+    internalRoutes: "internal-routes.js",
+    images: "images.js",
+    strings: "strings.js",
 }
+
+const DEFAULT_VAR_CONTAINER_NAMES = {
+    referenceIds: "MODULE_REFERENCE_ID",
+    externalRoutes: "MODULE_EXTERNAL_ROUTES",
+    internalRoutes: "MODULE_INTERNAL_ROUTES",
+    images: "MODULE_IMAGES",
+    strings: "MODULE_STRINGS",
+    locateStrings: "MODULE_LOCATE_STRINGS",
+    commonReferenceIds: "COMMONS_REFERENCE_ID",
+    commonExternalRoutes: "COMMONS_EXTERNAL_ROUTES",
+    commonInternalRoutes: "COMMONS_INTERNAL_ROUTES",
+    commonImages: "COMMONS_IMAGES",
+    commonStrings: "COMMONS_STRINGS",
+    commonLocateStrings: "COMMONS_LOCATE_STRINGS",
+}
+
+Object.freeze(DEFAULT_FILE_NAMES);
+Object.freeze(DEFAULT_VAR_CONTAINER_NAMES);
 
 class JsLoader {
 
@@ -119,23 +137,29 @@ class JsLoader {
     }
 }
 
-class JsTextLoader extends JsLoader{
+class JsTextLoader extends JsLoader {
     
     #hasLocateText;
     #locateVarName;
     #locateRoute;
+    #lang;
 
-    constructor(doc, scriptRoute, defultcontainerVarName, hasLocateText, lang, locateVarName, loadCompletedListener, loadFailListener)
+    constructor(doc, scriptRoute, defultcontainerVarName, hasLocateText, lang, locateVarName, locateFilePath, loadCompletedListener, loadFailListener)
     {
-        super(doc,scriptRoute,defultcontainerVarName,loadCompletedListener, loadFailListener);
-        const path = this.myFileRoute.substring(0,this.myFileRoute.lastIndexOf("/") + 1);
-        this.#locateRoute = path + "strings/" + lang + ".js";
+        super(doc, scriptRoute, defultcontainerVarName, loadCompletedListener, loadFailListener);
+        this.#locateRoute = locateFilePath;
         this.#locateVarName = locateVarName;
         this.#hasLocateText = hasLocateText;
-     }
+        this.#lang = lang;
+    }
+
+    get Language() {
+        return this.#lang;
+    }
 
     loadScript() {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
+            
             this.myResource = eval(this.myVarNameForLook);
             if(this.#hasLocateText) {
                 this.loadLocateTexts();
@@ -249,7 +273,7 @@ class PageModule {
     }
 
     checkLoads() {
-        console.log("hola");
+        
     }
 }
 
@@ -258,8 +282,22 @@ class PageModuleBuilder {
     #myDocument;
     #projectRootDirectory;
     #moduleDirectory;
+    #stopIfOneFail;
 
-    #properties = { referencesId: { has: false, varContainer:undefined,path:undefined}
+    #properties = { 
+        referencesId: { has: false, varContainer: undefined, path: undefined},
+        externalRoutes: { has: false, varContainer: undefined, path: undefined},
+        internalRoutes: { has: false, varContainer: undefined, path: undefined},
+        images: { has: false, varContainer: undefined, path: undefined},
+        strings: { has: false, varContainer: undefined, path: undefined},
+        locateStrings: { has: false, varContainer: undefined, path: undefined, lang:undefined},
+        
+        commonReferencesId: { add: false, varContainer: undefined, path: undefined},
+        commonExternalRoutes: { add: false, varContainer: undefined, path: undefined},
+        commonInternalRoutes: { add: false, varContainer: undefined, path: undefined},
+        commonImages: { add: false, varContainer: undefined, path: undefined},
+        commonStrings: { add: false, varContainer: undefined, path: undefined},
+        commonLocateStrings: { add: false, varContainer: undefined, path: undefined, lang:undefined},
     };
 
     constructor(document, mainScriptPath, modulePath) {
@@ -267,21 +305,62 @@ class PageModuleBuilder {
         this.#projectRootDirectory = mainScriptPath;
         this.#moduleDirectory = modulePath;
         this.#myDocument = document;
-        
+        this.#stopIfOneFail = false;
     }
 
-    build(onLoadCompletedListener,loadFailedListener) {
+    build(onLoadCompletedListener, loadFailedListener) {
 
         const doc =  this.#myDocument ?  this.#myDocument : document;
         const module = this.#moduleDirectory ? this.#moduleDirectory : MY_MODULE_URI + "/js";
         const pageModule = new PageModule(doc);
         const modulesToLoad = [];
+        
         if(this.#properties.referencesId.has) {
-            const varName = this.#properties.referencesId.varContainer ? this.#properties.referencesId.varContainer : "REFERENCE_ID";
-            const scriptFile = this.#properties.referencesId.path ? this.#properties.referencesId.path : module + "/" + FILE_NAMES.referencesIds;
+            const varName = this.#properties.referencesId.varContainer ? this.#properties.referencesId.varContainer : DEFAULT_VAR_CONTAINER_NAMES.referenceIds;
+            const scriptFile = this.#properties.referencesId.path ? this.#properties.referencesId.path : module + "/" + DEFAULT_FILE_NAMES.referencesIds;
             const referencesIds = new JsLoader(doc,scriptFile,varName);
             modulesToLoad.push(referencesIds);
         }
+
+        if(this.#properties.externalRoutes.has) {
+            const varName = this.#properties.externalRoutes.varContainer ? this.#properties.externalRoutes.varContainer : DEFAULT_VAR_CONTAINER_NAMES.externalRoutes;
+            const scriptFile = this.#properties.externalRoutes.path ? this.#properties.externalRoutes.path : module + "/" + DEFAULT_FILE_NAMES.externalRoutes;
+            const externalRoutes = new JsLoader(doc,scriptFile,varName);
+            modulesToLoad.push(externalRoutes);
+        }
+
+        if(this.#properties.internalRoutes.has) {
+            const varName = this.#properties.internalRoutes.varContainer ? this.#properties.internalRoutes.varContainer : DEFAULT_VAR_CONTAINER_NAMES.internalRoutes;
+            const scriptFile = this.#properties.internalRoutes.path ? this.#properties.internalRoutes.path : module + "/" + DEFAULT_FILE_NAMES.internalRoutes;
+            const internalRoutes = new JsInternalRouteLoader(doc,scriptFile,this.#projectRootDirectory,varName);
+            modulesToLoad.push(internalRoutes);
+        }
+
+        if(this.#properties.images.has) {
+            const varName = this.#properties.images.varContainer ? this.#properties.images.varContainer : DEFAULT_VAR_CONTAINER_NAMES.images;
+            const scriptFile = this.#properties.images.path ? this.#properties.images.path : module + "/" + DEFAULT_FILE_NAMES.images;
+            const images = new JsInternalRouteLoader(doc,scriptFile,this.#projectRootDirectory,varName);
+            modulesToLoad.push(images);
+        }
+
+        if(this.#properties.strings.has) {
+            
+            let hasLocateText = this.#properties.locateStrings.has;
+            let lang = undefined;
+            let locateVarName = undefined;
+            let locateFilePath = undefined;
+            if(hasLocateText) {
+                lang = this.#properties.locateStrings.lang ? this.#properties.locateStrings.lang : USER_LANG.substring(0,2);
+                locateVarName = this.#properties.locateStrings.varContainer ? this.#properties.locateStrings.varContainer : DEFAULT_VAR_CONTAINER_NAMES.locateStrings;
+                locateFilePath = this.#properties.locateStrings.path ? this.#properties.locateStrings.path : module + "/strings/" + lang.substring(0,2)+".js";
+            }
+            
+            const varName = this.#properties.strings.varContainer ? this.#properties.strings.varContainer : DEFAULT_VAR_CONTAINER_NAMES.strings;
+            const scriptFile = this.#properties.strings.path ? this.#properties.strings.path : module + "/" + DEFAULT_FILE_NAMES.strings;
+            const strings = new JsTextLoader(doc,scriptFile,varName,hasLocateText,lang,locateVarName,locateFilePath);
+            modulesToLoad.push(strings);
+        }
+
         pageModule.setModulesToLoad(modulesToLoad);
         return pageModule;
     }
@@ -294,59 +373,94 @@ class PageModuleBuilder {
         return this;
     }
 
-    setHasInternalRoutes(isHas){
+    setHasExternalRoutes(isHas, varNameContainer, filePath) {
         
+        this.#properties.externalRoutes.has = isHas;
+        this.#properties.externalRoutes.varContainer = varNameContainer;
+        this.#properties.externalRoutes.path = filePath;
+        return this;
+    }
+
+    setHasInternalRoutes(isHas, varNameContainer, filePath) {
+        
+        this.#properties.internalRoutes.has = isHas;
+        this.#properties.internalRoutes.varContainer = varNameContainer;
+        this.#properties.internalRoutes.path = filePath;
+        return this;
+    }
+
+    setHasImages(isHas, varNameContainer, filePath) {
+        
+        this.#properties.images.has = isHas;
+        this.#properties.images.varContainer = varNameContainer;
+        this.#properties.images.path = filePath;
+        return this;
+    }
+
+    setHasStrings(isHas, varNameContainer, filePath) {
+        
+        this.#properties.strings.has = isHas;
+        this.#properties.strings.varContainer = varNameContainer;
+        this.#properties.strings.path = filePath;
+        return this;
+    }
+
+    setHasLocateStrings(isHas, lang, varNameContainer, filePath) {
+        
+        this.#properties.locateStrings.has = isHas;
+        this.#properties.locateStrings.lang = lang;
+        this.#properties.locateStrings.varContainer = varNameContainer;
+        this.#properties.locateStrings.path = filePath;
+        return this;
+    }
+
+    addCommonReferencesId(add, varNameContainer, filePath) {
+
+        this.#properties.commonReferencesId.add = add;
+        this.#properties.commonReferencesId.varContainer = varNameContainer;
+        this.#properties.commonReferencesId.path = filePath;
         return this;
     }
     
-    setHasExternalRoutes(isHas){
-        
-        return this;
-    }
 
-    setHasStrings(isHas){
-        
-        return this;
-    }
+    addCommonExternalRoutes(add, varNameContainer, filePath) {
 
-    setHasImages(isHas){
-        
-        return this;
-    }
-
-    setHasLocateStrings(isHas) {
-        
-        return this;
-    }
-
-    addCommonReferencesId(add) {
-
+        this.#properties.commonExternalRoutes.add = add;
+        this.#properties.commonExternalRoutes.varContainer = varNameContainer;
+        this.#properties.commonExternalRoutes.path = filePath;
         return this;
     }
     
+    addCommonInternalRoutes(add, varNameContainer, filePath) {
 
-    addCommonExternalRoutes(add) {
-
+        this.#properties.commonInternalRoutes.add = add;
+        this.#properties.commonInternalRoutes.varContainer = varNameContainer;
+        this.#properties.commonInternalRoutes.path = filePath;
         return this;
     }
     
-    addCommonInternalRoutes(add) {
+    addCommonImages(add, varNameContainer, filePath) {
 
+        this.#properties.commonImages.add = add;
+        this.#properties.commonImages.varContainer = varNameContainer;
+        this.#properties.commonImages.path = filePath;
         return this;
     }
     
-    addCommonImages(add) {
-
-        return this;
-    }
-    
-    addCommonStrings(add) {
+    addCommonStrings(add, varNameContainer, filePath) {
         
+        this.#properties.commonStrings.add = add;
+        this.#properties.commonStrings.varContainer = varNameContainer;
+        this.#properties.commonStrings.path = filePath;
         return this;
     }
     
-    addCommonLocateStrings(add) {
+    addCommonLocateStrings(add, lang, varNameContainer, filePath) {
         
+        this.#properties.commonLocateStrings.add = add;
+        this.#properties.commonLocateStrings.lang = lang;
+        this.#properties.commonLocateStrings.varContainer = varNameContainer;
+        this.#properties.commonLocateStrings.path = filePath;
         return this;
     }
     

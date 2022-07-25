@@ -6,4 +6,4 @@ const COMMONS_STRINGS = {
 };
 
 
-
+Object.freeze(COMMONS_STRINGS);
