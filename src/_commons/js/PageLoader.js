@@ -236,13 +236,9 @@ class PageModule {
     #loadFailedListener;
     
     #modulesToLoad;
-    #myDocument;
     #stopIfOneFail;
     
-    constructor(document) {
-
-        this.#myDocument = document;
-    }
+    
 
     get StopIfOneFail() {
         return this.#stopIfOneFail;
@@ -263,7 +259,7 @@ class PageModule {
         else {
             for(let i = 0; i < modules.length; i++) {
 
-                modules[i].onCompletedListener = () => {this.checkLoadsAfterCompletedOne(modules);};
+                modules[i].onCompletedListener = () => {this.#checkLoadsAfterCompletedOne();};
                 modules[i].loadScript();
             }
         }
@@ -281,18 +277,18 @@ class PageModule {
         this.#loadFailedListener = onFail;
     }
 
-    checkLoadsAfterCompletedOne(modules) {
+    #checkLoadsAfterCompletedOne() {
         
-        const length = modules.length;
+        const length = this.#modulesToLoad.length;
         const R = {};
         let completed = 0;
         
         for(let i = 0; i < length; i++) {
-            const isLoaded = modules[i].myLoadCompleted;
+            const isLoaded =  this.#modulesToLoad[i].myLoadCompleted;
             if(isLoaded) {
                 completed++;
-                const k = modules[i].myVarNameForLook;
-                const v = modules[i].myResource;
+                const k =  this.#modulesToLoad[i].myVarNameForLook;
+                const v =  this.#modulesToLoad[i].myResource;
                 R[k] = v;
             }
         }
