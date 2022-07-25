@@ -288,10 +288,12 @@ class PageModule {
         let completed = 0;
         
         for(let i = 0; i < length; i++) {
-
-            if(modules[i].myLoadCompleted) {
+            const isLoaded = modules[i].myLoadCompleted;
+            if(isLoaded) {
                 completed++;
-                R[modules[i].myVarNameForLook] = modules[i].myResource;
+                const k = modules[i].myVarNameForLook;
+                const v = modules[i].myResource;
+                R[k] = v;
             }
         }
         
