@@ -1,43 +1,16 @@
 <!DOCTYPE html>
-<!-- home page-->
+
 <html lang="es">
   <head>
 	  <meta charset="utf-8">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <title id="title"></title>
-	  <script type="text/javascript" src="commons/js/routes-util-builder.js"></script>
-	  <script type="text/javascript" src="commons/js/strings.js"></script>
-	  <script type="text/javascript" src="commons/js/routes.js"></script>
-	  <script type="text/javascript" src="commons/js/images.js"></script>
-	  <script type="text/javascript" src="home/js/strings.js"></script>
-	  <script type="text/javascript" src="home/js/referencesIds.js"></script>
-   
+	  <script>
+		window.location.replace("./src/home/index.html");
+	  </script>
   </head>
   <body>
 
-    <br>
-    	<a id="page1" href="url">texto de prueba</a>
-  	</br>
-
-	<br>
-		<a id="page2" href="url">texto de prueba</a>
-	</br>
-
-    <img id="mi_image"/>
     
-
-	<script>
-		
-		const myCommmonRoutes = loadMyRoutes("");
-		const myImagesRoutes = loadMyImagesRoutes("");
-		
-		document.getElementById(REFERENCE_ID.homeTitle).innerHTML =  HOME_STRINGS.homeTitle;	
-		document.getElementById(REFERENCE_ID.goToPageOneHref).href = myCommmonRoutes.page1; 
-		document.getElementById(REFERENCE_ID.goToPageOneHref).innerHTML = COMMONS_STRINGS.goToPageOne; 
-		document.getElementById(REFERENCE_ID.goToPageTwoHref).href = myCommmonRoutes.page2; 
-		document.getElementById(REFERENCE_ID.goToPageTwoHref).innerHTML = COMMONS_STRINGS.goToPageTwo; 
-		document.getElementById(REFERENCE_ID.image).src = myImagesRoutes.image;  
-		
-	</script>
   </body>
 </html>

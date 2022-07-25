@@ -19,4 +19,4 @@ Sólo clona este repositorio y editalo sin configuraciones o instalaciones adici
 <a name="license"/>
 
 ### Licence
-Todos los archivos de este repositorio están bajo la licencia **en construcción**. Ver más detalles de la licencia [aquí](LICENSE).
+Todos los archivos de este repositorio están bajo la licencia **MIT No Attribution**. Ver más detalles de la licencia [aquí](../../LICENSE).
