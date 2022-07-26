@@ -2,11 +2,12 @@
 
 # simple html template
 
-A simple template to create simple web pages, which can work without internet and without frameworks or a lest with the minimum of them.
-
-Also, this is made for those who are just starting out, they may have something to start with with a structured project.
-
 Just clone and edit without settings or extra installations.
+
+A simple template to create simple statics web pages, which can work without internet, without frameworks and without any server-side applications such as Apache, Nginx or other similar, or at least with the minimum of them.
+
+Also, this is made for those who are just starting out, they may have something to start with a structured project.
+
 
 ## contents
 - [How to contribute to this repository?](#how-to-contribute-to-this-repository)

@@ -1,10 +1,11 @@
 # simple html template
 
-Una plantilla simple para crear páginas web sencillas, que pueden funcionar sin internet and sin frameworks, o al menos con la mínima cantidad de ellos.
+Sólo clona este repositorio y editalo sin configuraciones o instalaciones adicionales.
+
+Una plantilla simple para crear páginas web estáticas y sencillas, que pueden funcionar sin internet, sin frameworks y sin ninguna aplicación del lado del servidor como Apache, Nginx u otras similares, o al menos con la mínima cantidad de ellos.
 
 Adicionalmente, está pensado para aquellas personas que están empezando, de manera tal que tengan un proyecto estructurado con el cúal iniciar.
 
-Sólo clona este repositorio y editalo sin configuraciones o instalaciones adicionales.
 
 ## contents
 - [¿Cómo contribuir en este repositorio?](#how-to-contribute-to-this-repository)
