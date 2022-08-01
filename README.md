@@ -10,8 +10,99 @@ Also, this is made for those who are just starting out, they may have something 
 
 
 ## contents
+- [Application tree](#application-tree)
 - [How to contribute to this repository?](#how-to-contribute-to-this-repository)
 - [License](#license)
+
+
+<a name="application-tree"/> 
+
+### Application tree
+
+```
+root 
+├── buildTasks
+├── dist
+├── docs
+│   ├── _assets
+│   └── es
+│       └── _assets
+├── src
+│   ├── __libs
+│   │   ├── lib1
+│   │   └── lib2
+│   ├── _commons
+│   │   ├── css
+│   │   ├── fonts
+│   │   ├── img
+│   │   └── js
+│   │       ├── menu
+│   │       ├── strings
+│   │       │   └── es.js 
+│   │       ├── external-routes.js
+│   │       ├── images.js
+│   │       ├── internal-routes.js
+│   │       ├── PageLoader.js
+│   │       ├── referencesIds.js
+│   │       └── strings.js
+│   ├── home
+│   │   ├── css
+│   │   ├── fonts
+│   │   ├── img
+│   │   ├── js
+│   │   │   ├── menu
+│   │   │   ├── strings
+│   │   │   │   └── es.js 
+│   │   │   ├── external-routes.js
+│   │   │   ├── images.js
+│   │   │   ├── internal-routes.js
+│   │   │   ├── referencesIds.js
+│   │   │   └── strings.js
+│   │   ├── home.js
+│   │   └── index.html 
+│   │
+│   ├── page1
+│   │   ├── css
+│   │   ├── fonts
+│   │   ├── img
+│   │   ├── js
+│   │   │   ├── menu
+│   │   │   ├── strings
+│   │   │   │   └── es.js 
+│   │   │   ├── external-routes.js
+│   │   │   ├── images.js
+│   │   │   ├── internal-routes.js
+│   │   │   ├── referencesIds.js
+│   │   │   └── strings.js
+│   │   ├── page1.js
+│   │   └── index.html 
+│   │
+│   └── page2
+│       ├── css
+│       ├── fonts
+│       ├── img
+│       ├── js
+│       │   ├── menu
+│       │   ├── strings
+│       │   │   └── es.js 
+│       │   ├── external-routes.js
+│       │   ├── images.js
+│       │   ├── internal-routes.js
+│       │   ├── referencesIds.js
+│       │   └── strings.js
+│       ├── page2.js
+│       └── index.html 
+│
+├── test
+│   ├── buildTasks
+│   │   ├── instrument
+│   │   └── unit
+│   └── src
+│       ├── instrument
+│       └── unit
+├── index.html
+└── main-index.js
+```
 
 <a name="how-to-contribute-to-this-repository"/>
 
