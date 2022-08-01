@@ -93,6 +93,10 @@ class JsLoader {
         this.#loadCompleteListener = listener;
     }
 
+    set onFailListener(listener) {
+        this.#loadFailListener = listener;
+    }
+
     onCompleted() {
         this.#loadComplete = true;
         if(this.#loadCompleteListener) {
@@ -111,7 +115,7 @@ class JsLoader {
         JsLoader.scriptLoader(this.myDocument,this.myFileRoute, () => {
             this.myResource = eval(this.myVarNameForLook);
             this.onCompleted();
-        }, this.onFail);
+        }, () => { this.onFail();});
     }
 
     static scriptLoader(document, scriptRoute, onLoadCallback, onLoadFailCallback ) 
@@ -121,7 +125,16 @@ class JsLoader {
         script.src = scriptRoute;
         script.onload = function() {
             if(onLoadCallback) {
-                onLoadCallback(script);
+                try {
+                    onLoadCallback(script);
+                }
+                catch(err){
+                    console.log("fail to load " + scriptRoute);
+                    console.log(err);
+                    if(onLoadFailCallback) {
+                        onLoadFailCallback();
+                    }
+                }
             }
         };
         script.onerror = function () {
@@ -130,6 +143,7 @@ class JsLoader {
                 onLoadFailCallback();
             }
         };
+        
         document.body.appendChild(script);
     }
 }
@@ -164,7 +178,7 @@ class JsTextLoader extends JsLoader {
             else {
                 this.onCompleted();
              }
-        }, this.onFail);
+        }, () => {this.onFail();});
     }
 
     loadLocateTexts() {
@@ -176,7 +190,7 @@ class JsTextLoader extends JsLoader {
             this.myResource = JsTextLoader.loadStringsHelper(a,b);
             this.myDocument.body.removeChild(langScriptElement);
             this.onCompleted();
-        }, this.onFail);
+        }, () => { this.onFail(); });
     }
 
     static loadStringsHelper(defaultStrings,locateStrings) {
@@ -186,7 +200,7 @@ class JsTextLoader extends JsLoader {
         const strings = {};
         for(let i = 0; i < srcKeys.length; i++) {
           const key = srcKeys[i];
-          strings[key] =  defaultStrings[key];
+          strings[key] = defaultStrings[key];
           if(locateStrings[key]) 
           {
             strings[key] = locateStrings[key];
@@ -212,7 +226,7 @@ class JsInternalRouteLoader extends JsLoader {
             const internalPaths = eval(this.myVarNameForLook);
             this.myResource = JsInternalRouteLoader.loadInternalRoutesHelper(this.#rootPath,internalPaths);
             this.onCompleted();
-        }, this.onFail);
+        }, () => { this.onFail(); });
     }
     
     static loadInternalRoutesHelper(deepPath,sourcesPaths) 
@@ -236,18 +250,8 @@ class PageModule {
     #loadFailedListener;
     
     #modulesToLoad;
-    #stopIfOneFail;
+    #failDectected = false;
     
-    
-
-    get StopIfOneFail() {
-        return this.#stopIfOneFail;
-    }
-
-    set StopIfOneFail(stop) {
-        this.#stopIfOneFail = stop;
-    }
-
 
     loadPage() {
         const modules = this.#modulesToLoad;
@@ -259,7 +263,8 @@ class PageModule {
         else {
             for(let i = 0; i < modules.length; i++) {
 
-                modules[i].onCompletedListener = () => {this.#checkLoadsAfterCompletedOne();};
+                modules[i].onCompletedListener = () => { this.#checkLoadsAfterCompletedOne(); };
+                modules[i].onFailListener = () => { this.#checkAfterOneFailToLoad(); };
                 modules[i].loadScript();
             }
         }
@@ -277,8 +282,23 @@ class PageModule {
         this.#loadFailedListener = onFail;
     }
 
+    #checkAfterOneFailToLoad() {
+        const beforeChange = this.#failDectected;
+        this.#failDectected = true;
+        if(!beforeChange) {
+
+            if(this.#loadFailedListener) {
+                this.#loadFailedListener();
+            }
+        }
+    }
+
     #checkLoadsAfterCompletedOne() {
         
+        if(this.#failDectected) {
+            return;
+        }
+
         const length = this.#modulesToLoad.length;
         const R = {};
         let completed = 0;
@@ -307,7 +327,7 @@ class PageModuleBuilder {
     #myDocument;
     #projectRootDirectory;
     #moduleDirectory;
-    #stopIfOneFail;
+    
 
     #properties = { 
         referencesId: { has: false, varContainer: undefined, path: undefined},
@@ -330,7 +350,6 @@ class PageModuleBuilder {
         this.#projectRootDirectory = mainScriptPath;
         this.#moduleDirectory = modulePath;
         this.#myDocument = document;
-        this.#stopIfOneFail = false;
     }
 
     get moduleUri() {
