@@ -11,6 +11,7 @@ Adicionalmente, está pensado para aquellas personas que están empezando, de ma
 - [Árbol de la aplicación](#application-tree)
 - [¿Cómo contribuir en este repositorio?](#how-to-contribute-to-this-repository)
 - [License](#license)
+- [F.A.Q](#faq)
 
 
 <a name="application-tree"/> 
@@ -112,3 +113,11 @@ root
 
 ### Licence
 Todos los archivos de este repositorio están bajo la licencia **MIT No Attribution**. Ver más detalles de la licencia [aquí](../../LICENSE).
+
+<a name="faq"/>
+
+### F.A.Q
+
+¿Por qué no usas import en los archivos .js?
+
+Porque eso requiere que se use una aplicación del lado del servidor, Además de ser un inconveniente para las URLs de tipo `file:///`. [Más información sobre módulos en JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript/Guide/Modules#otras_diferencias_entre_m%C3%B3dulos_y_scripts_est%C3%A1ndar) 
