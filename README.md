@@ -15,7 +15,6 @@ Also, this is made for those who are just starting out, they may have something 
 - [License](#license)
 - [F.A.Q](#faq)
 
-
 <a name="application-tree"/> 
 
 ### Application tree
