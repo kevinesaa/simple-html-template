@@ -103,6 +103,22 @@ root
 ├── index.html
 └── main-index.js
 ```
+#### Application tree details
+
+- buildTasks: If there are any scripts or other automation artifacts that pre-process the `src` code or do any other automation task, such as a syntax validator, they should be in this directory
+- dist: If there is a pre-process that analyzes and modify the `src` code, the result after pre-process should be in this directory
+- docs: 
+ - _assets:
+ - language code:
+   - _assets:   
+- src: 
+- test: 
+ - buildTasks: 
+ - src: 
+  - instrument:
+  - unit: 
+- index.html: If the app need that the home page will be in the root folder, use this to redirect to real entry point of the web page.
+- main-index.js: This script always have to be in the root directory of the project and have to be add to all the html files, in orden to build the absolute path of internal urls' when is execute it without internet (`file:///`).
 
 <a name="how-to-contribute-to-this-repository"/>
 
@@ -119,6 +135,6 @@ All files in this repository are licensed under the **MIT No Attribution** licen
 
 ### F.A.Q
 
-Why don't you use import in the .js files?
+**Why don't you use import in the .js files?**
 
 Because it that requires a server-side application, Also, it is a Issue for the type of `file:///` URLs. [More information about JavaScript's modules](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules#other_differences_between_modules_and_standard_scripts) 
