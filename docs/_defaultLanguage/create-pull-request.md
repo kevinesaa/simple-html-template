@@ -33,26 +33,26 @@ Next, we'll take a closer look at how to do each step of the process.
 
 Start forking this repository, to do so just click on the fork button at the top right.
 
-![Image](docs/_assets/contributing/pull_request/00.jpg)
+![Image](../_assets/contributing/pull_request/00.jpg)
 
-![Image](docs/_assets/contributing/pull_request/01.jpg)
+![Image](../_assets/contributing/pull_request/01.jpg)
 
 In order to know if you're looking at the fork you've just done, or the original
 repository, you can take a look at the top-left corner of your screen. The forked
 repository title starts with your username, followed by the repository name; it also includes
 the text **forked from**, with the original repository and user name.
  
-![Image](docs/_assets/contributing/pull_request/02.jpg)
+![Image](../_assets/contributing/pull_request/02.jpg)
 
 Then, click the green **code** button, and copy the HTTPS URL from the textblock.
 
-![Image](docs/_assets/contributing/pull_request/03.jpg)
+![Image](../_assets/contributing/pull_request/03.jpg)
 
 Make a new folder on your computer, and open Git on it.
 
-![Image](docs/_assets/contributing/pull_request/04.jpg)
+![Image](../_assets/contributing/pull_request/04.jpg)
 
-![Image](docs/_assets/contributing/pull_request/05.jpg)
+![Image](../_assets/contributing/pull_request/05.jpg)
 
 The next step is to clone the fork into the folder you've just created.
 To do so, write the following command in the git console:
@@ -63,7 +63,7 @@ where `fork_url` goes the previous copied URL; Then press Enter.
 
 Open the git's console inside the just cloned repository.
 
-![Image](docs/_assets/contributing/pull_request/06.jpg)
+![Image](../_assets/contributing/pull_request/06.jpg)
 
 Configure Git with your basic information. First, add your email address, typing the following:
 
@@ -109,15 +109,15 @@ Now, you just have to create a pull request to the original repository.
 
 Go to the forked repository on Github, there, look for the branch you just pushed to and select it.
 
-![Image](docs/_assets/contributing/pull_request/08.jpg)
+![Image](../_assets/contributing/pull_request/08.jpg)
 
 Then, select the **Pull requests** option
 
-![Image](docs/_assets/contributing/pull_request/09.jpg)
+![Image](../_assets/contributing/pull_request/09.jpg)
 
 Them, press the **new pull request** button
 
-![Image](docs/_assets/contributing/pull_request/10.jpg)
+![Image](../_assets/contributing/pull_request/10.jpg)
 
 (1) Select the repository you want to create the pull request against (it beigns with the other's username),
 (2) followed by the branch you want to pull request agains (for this repository, you must always have to create pull requests against the develop branch);
@@ -126,15 +126,15 @@ Them, press the **new pull request** button
   
 Then, press the **create pull request** button
 
-![Image](docs/_assets/contributing/pull_request/11.jpg)
+![Image](../_assets/contributing/pull_request/11.jpg)
 
 You have to add a title for your pull request, and optionally you can add a more detailed description; Then press the **Create pull request** button
 
-![Image](docs/_assets/contributing/pull_request/12.jpg)
+![Image](../_assets/contributing/pull_request/12.jpg)
 
 :tada: If you get to here, you've just created your first pull request, congratulations! :tada:
 
-![Image](docs/_assets/contributing/pull_request/13.jpg)
+![Image](../_assets/contributing/pull_request/13.jpg)
 
 Do you want to know more about how a Pull Request is made? Visit https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github
 
@@ -200,11 +200,11 @@ It is also recommended that you delete the branch of your files on Github, then 
 
 Syncing your fork with the original repository, is simmilar to creating a pull request. First, you have to go to the fork on Github and look for the pull request option.
 
-![Image](docs/_assets/contributing/pull_request/09.jpg)
+![Image](../_assets/contributing/pull_request/09.jpg)
 
 Then, press the **New pull request** button
 
-![Image](docs/_assets/contributing/pull_request/10.jpg)
+![Image](../_assets/contributing/pull_request/10.jpg)
 
 Then,
 (1) Select the repository you want to pull request to, in this case, you'll select your own, the one that begins with your username.
@@ -216,21 +216,21 @@ Then press the **Create pull request** button.
 
 Note: If when selecting the branch on the step (2), the repository (step 3) option dissappears, click the **compare across forks** button.
 
-![Image](docs/_assets/contributing/pull_request/14.jpg)
+![Image](../_assets/contributing/pull_request/14.jpg)
 
 Here, you have to set a title for your pull request, and optionally you can add a longer description; Then press the **Create pull request** button.
 
-![Image](docs/_assets/contributing/pull_request/12.jpg)
+![Image](../_assets/contributing/pull_request/12.jpg)
 
 This will create an entry in the your repository's pull request section, look for it and open it.
 
-![Image](docs/_assets/contributing/pull_request/15.jpg)
+![Image](../_assets/contributing/pull_request/15.jpg)
 
 Now, you just need to make a *merge*; Press the **Merge pull request** button, and then **Confirm merge**.
 
 :tada: Congratulations! if everything went well, you have your fork and the original repository synced :tada:
 
-![Image](docs/_assets/contributing/pull_request/16.jpg)
+![Image](../_assets/contributing/pull_request/16.jpg)
 
 <a name="syncing-locally"/>
 
