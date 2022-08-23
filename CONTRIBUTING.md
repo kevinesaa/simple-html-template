@@ -2,7 +2,7 @@
 # How to contribute
 
 - [Restrictions](#restrictions)
-- [Sign up to GitHub](create-github-account.md)
+- [Sign up to GitHub](docs/_defaultLanguage/create-github-account.md)
 - [Required software](#software)
 - [Making your pull request in this repository](#make-your-pull-request)
 
@@ -39,7 +39,7 @@ The process of making a pull request can be summarized in the following steps:
 - Synchronize the fork in Github with a push.
 - And, pull request to the original repository from Github.
 
-If you want kwnow more details about any one of the steps, check the [extendend tutorial](create-pull-request.md).
+If you want kwnow more details about any one of the steps, check the [extendend tutorial](docs/_defaultLanguage/create-pull-request.md).
 
 If you have any other questions, you can create an [Issue](https://github.com/kevinesaa/simple-html-template/issues/) asking for whatever you want.
 
