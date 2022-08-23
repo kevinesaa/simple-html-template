@@ -125,10 +125,10 @@ root
  - **_commons:** The source code and assets that is share amoung two or more features or pages' modules.
  - **home:** The source code and assets of home page or entry point of the web site.
  - **page1:** A example of a page module.
-- **tests:** The source code of the automatation tests to prevent bugs in this repository. As more quality test cases are added, more bugs will be prevented, so check as many expected outputs for different inputs as possible. Check the [extended test folder documentation](docs/_defaultLanguage/extended-tests.md) for more details about what contain this folder.
+- **tests:** The source code of the automatation tests to prevent bugs in this repository. As more quality test cases are added, more bugs will be prevented, so check as many expected outputs for different inputs as possible. Run the automatation code after add a new feature or a new fix. Check the [extended test folder documentation](docs/_defaultLanguage/extended-tests.md) for more details about what contain this folder.
  - **buildTasks:** The source code of the automation tests for check that the src's pre-process works as expected.
  - **src:** The source code of the automation tests for check that the code from the web site works as expected.
-- **index.html:** If the app need that the home page will be in the root folder, use this to redirect to real entry point of the web page.
+- **index.html:** If the app need that the home page will be in the root folder, use this file to redirect to real entry point of the web page.
 - **main-index.js:** This script always have to be in the root directory of the project and have to be add to all the html files, in orden to build the absolute path of internal urls' when is execute it without internet (`file:///`).
 
 <a name="how-to-contribute-to-this-repository"/>
