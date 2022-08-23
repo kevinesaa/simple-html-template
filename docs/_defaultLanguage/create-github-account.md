@@ -4,7 +4,7 @@ To be able to create a pull request, is required to have an account on Github, t
 
 **1.- Enter your basic information**
 
-![Image](docs/_assets/contributing/github_account/01.jpg)
+![Image](../_assets/contributing/github_account/01.jpg)
 
 **2.- Check that you're not a robot :robot:.**
 
