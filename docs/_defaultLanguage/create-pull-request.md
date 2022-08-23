@@ -33,9 +33,9 @@ Next, we'll take a closer look at how to do each step of the process.
 
 Start forking this repository, to do so just click on the fork button at the top right.
 
-![Image](docs/_assets/contributing/pull_request/00.jpg)
+![Image](../_assets/contributing/pull_request/00.jpg)
 
-![Image](docs/_assets/contributing/pull_request/01.jpg)
+![Image](../_assets/contributing/pull_request/01.jpg)
 
 In order to know if you're looking at the fork you've just done, or the original
 repository, you can take a look at the top-left corner of your screen. The forked
