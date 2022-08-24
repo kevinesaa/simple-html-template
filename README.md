@@ -116,18 +116,18 @@ root
 - **buildTasks:** If there are any scripts or other automation artifacts that pre-process the `src` code or do any other automation task, such as a syntax validator, they should be in this directory.
 - **dist:** If there is a pre-process that analyzes and modify the `src` code, the result after pre-process should be in this directory
 - **docs:** All the files needed to maintain this repository documented.
- - **_assets:** Common binary files amoung languages, like images, videos, etc. that help to keep documented this repository.
- - **_defaultLanguage:** Choose the main language of the documentation files and save it in this directory; In this case english it is the default language.
- - **language code:** If you want to translate the documentation to another language, add a directory and named it following the [ISO 639-1 standard](https://en.wikipedia.org/wiki/ISO_639-1). In this case spanish (es) it is used as main example.
-   - **_assets:** If there is some assets from `docs/_assets` that need to be translate, should be in this directory with the same name.
+   - **_assets:** Common binary files amoung languages, like images, videos, etc. that help to keep documented this repository.
+   - **_defaultLanguage:** Choose the main language of the documentation files and save it in this directory; In this case english it is the default language.
+   - **language code:** If you want to translate the documentation to another language, add a directory and named it following the [ISO 639-1 standard](https://en.wikipedia.org/wiki/ISO_639-1). In this case spanish (es) it is used as main example.
+     - **_assets:** If there is some assets from `docs/_assets` that need to be translate, should be in this directory with the same name.
 - **src:** The source code and assets of the web site. Ordered in folders separate by features or pages' modules. Check the [extended src folder documentation](docs/_defaultLanguage/extended-src.md) for more details about what contain this folder.
- - **__libs:** If there are external libraries to run the project, they must be downloaded and saved it in a directory that should be named with the library name; Remember that this project should be work without Internet. Do not forget check the library's license before add it to the project.
- - **_commons:** The source code and assets that is share amoung two or more features or pages' modules.
- - **home:** The source code and assets of home page or entry point of the web site.
- - **page1:** A example of a page module.
+   - **__libs:** If there are external libraries to run the project, they must be downloaded and saved it in a directory that should be named with the library name; Remember that this project should be work without Internet. Do not forget check the library's license before add it to the project.
+   - **_commons:** The source code and assets that is share amoung two or more features or pages' modules.
+   - **home:** The source code and assets of home page or entry point of the web site.
+   - **page1:** A example of a page module.
 - **tests:** The source code of the automatation tests to prevent bugs in this repository. As more quality test cases are added, more bugs will be prevented, so check as many expected outputs for different inputs as possible. Run the automatation code after add a new feature or a new fix. Check the [extended test folder documentation](docs/_defaultLanguage/extended-tests.md) for more details about what contain this folder.
- - **buildTasks:** The source code of the automation tests for check that the src's pre-process works as expected.
- - **src:** The source code of the automation tests for check that the code from the web site works as expected.
+   - **buildTasks:** The source code of the automation tests for check that the src's pre-process works as expected.
+   - **src:** The source code of the automation tests for check that the code from the web site works as expected.
 - **index.html:** If the app need that the home page will be in the root folder, use this file to redirect to real entry point of the web page.
 - **main-index.js:** This script always have to be in the root directory of the project and have to be add to all the html files, in orden to build the absolute path of internal urls' when is execute it without internet (`file:///`).
 
