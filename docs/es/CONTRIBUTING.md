@@ -41,6 +41,6 @@ Para conocer en más detalle cada uno de los puntos, hemos creado una [guía](cr
 
 Si tienes alguna duda extra, puedes crear un [Issue](https://github.com/kevinesaa/simple-html-template/issues/) preguntando cualquier duda que tengas.
 
-¿Quieres saber más acercade como se hace un Pull Request? Visita https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github
+¿Quieres saber más acerca de como se hace un Pull Request? Visita https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github
 
 ¿Quieres saber más acerca de git? Visita https://git-scm.com/book/es/v2
