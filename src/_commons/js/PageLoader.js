@@ -14,15 +14,15 @@ const USER_LANG = localStorage.getItem(STORE_USER_LANG) ||
 	navigator.systemLanguage;
     
 
-const DEFAULT_FILE_NAMES =  {
+const DEFAULT_FILE_NAMES = Object.freeze({
     referencesIds: "referencesIds.js",
     externalRoutes: "external-routes.js",
     internalRoutes: "internal-routes.js",
     images: "images.js",
     strings: "strings.js",
-}
+});
 
-const DEFAULT_VAR_CONTAINER_NAMES = {
+const DEFAULT_VAR_CONTAINER_NAMES = Object.freeze({
     referenceIds: "MODULE_REFERENCE_ID",
     externalRoutes: "MODULE_EXTERNAL_ROUTES",
     internalRoutes: "MODULE_INTERNAL_ROUTES",
@@ -35,10 +35,7 @@ const DEFAULT_VAR_CONTAINER_NAMES = {
     commonImages: "COMMONS_IMAGES",
     commonStrings: "COMMONS_STRINGS",
     commonLocateStrings: "COMMONS_LOCATE_STRINGS",
-}
-
-Object.freeze(DEFAULT_FILE_NAMES);
-Object.freeze(DEFAULT_VAR_CONTAINER_NAMES);
+});
 
 class JsLoader {
 
