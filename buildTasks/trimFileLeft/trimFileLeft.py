@@ -1,6 +1,6 @@
 import sys
 import os
-import shutil
+import mimetypes
 
 _BLANK = " "
 _TAB = "\t"
@@ -21,10 +21,12 @@ def trimFileLeft(file):
             trimFileLeft(filePath)
         #end
     #end
-    
-    if(os.path.isfile(file)):
+    type = mimetypes.guess_type(file)
+    if(os.path.isfile(file) and type[0] and type[0].startswith("text")):
+        
         bufferOut = []
         buffer = open(file, "r")
+
         for line in buffer:
             index = 0
             while(line.startswith(_BLANK,index) or 
