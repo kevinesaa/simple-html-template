@@ -69,3 +69,6 @@ $RECYCLE.BIN/
 
 #python cache
 *.pyc
+
+#visual studio cache
+.vs/*
