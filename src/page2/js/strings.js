@@ -1,7 +1,6 @@
 
-const MODULE_STRINGS = {
+const MODULE_STRINGS = Object.freeze({
 	title:"pagina 2",
-	
-};
+});
 
 
