@@ -2,50 +2,52 @@ import sys
 import os
 import shutil
 
-def cp(source,dest):
+_LAST_INDEX : int = -1
+
+def cp(sourcePath : str, destPath : str ) -> None: 
     
-    destExist = os.path.exists(dest)
-    destIsDir = False
-    if (destExist):
-        destIsDir = os.path.isdir(dest)
+    destPathExist : bool = os.path.exists(destPath)
+    destPathIsDir : bool = False
+    if (destPathExist):
+        destPathIsDir = os.path.isdir(destPath)
     else: 
-        destIsDir = (dest[-1] == "/") or (dest[-1] == "\\")
+        destPathIsDir = (destPath[_LAST_INDEX] == "/") or (destPath[_LAST_INDEX] == "\\")
     #end
 
-    source = os.path.abspath(os.path.normpath(source))
-    dest = os.path.abspath(os.path.normpath(dest))
+    sourcePath = os.path.abspath(os.path.normpath(sourcePath))
+    destPath = os.path.abspath(os.path.normpath(destPath))
     
-    if(not os.path.exists(source)):
-        raise Exception("no valid source. File or directory not exist: "+source)
+    if(not os.path.exists(sourcePath)):
+        raise Exception("no valid source. File or directory not exist: " + sourcePath)
     #end
 
-    if(os.path.isdir(source)):
-        if(not destExist):
-           shutil.copytree(source,dest)
+    if(os.path.isdir(sourcePath)):
+        if(not destPathExist):
+           shutil.copytree(sourcePath,destPath)
         else:
-            sfiles = os.listdir(source)
+            sfiles : list[str] = os.listdir(sourcePath)
             for file in sfiles:
-                filePath = os.path.join(source,file)
-                destPath = os.path.join(dest,file)
-                cp(filePath,destPath)
+                filePath : str = os.path.join(sourcePath,file)
+                newDestPath : str = os.path.join(destPath,file)
+                cp(filePath,newDestPath)
             #end
         #end
     #end
 
-    if(os.path.isfile(source)):
+    if(os.path.isfile(sourcePath)):
         
-        if(not destExist):
-            if(destIsDir):
-                os.makedirs(dest,exist_ok=True)
-                os.path.join(dest,os.path.basename(source))
+        if(not destPathExist):
+            if(destPathIsDir):
+                os.makedirs(destPath,exist_ok=True)
+                os.path.join(destPath,os.path.basename(sourcePath))
             else:
-                destBaseName = os.path.basename(dest)
-                index = len(dest) - len(destBaseName)
-                destParent = dest[:index]
+                destFileBaseName : str = os.path.basename(destPath)
+                index : int = len(destPath) - len(destFileBaseName)
+                destParent : str = destPath[:index]
                 os.makedirs(destParent,exist_ok=True)
             #end
         #end   
-        shutil.copy(source,dest)
+        shutil.copy(sourcePath,destPath)
     #end
 #end
                 

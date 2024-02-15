@@ -1,3 +1,6 @@
+#mypy type checker cache
+.mypy_cache
+
 #mac os
 # General
 .DS_Store
@@ -68,4 +71,5 @@ $RECYCLE.BIN/
 .nfs*
 
 #python cache
+**/__pycache__
 *.pyc
