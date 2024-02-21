@@ -1,4 +1,5 @@
 import os
+import sys
 import typing
 
 _READ_FILE_MODE : str = "r"
@@ -15,7 +16,7 @@ def isBinaryFile(filePath:str) -> bool:
 	
 	fileAbsolutePath : str = os.path.abspath(os.path.normpath(filePath))
 	if (not os.path.exists(fileAbsolutePath)):
-		raise Exception("File or directory not exist: " + fileAbsolutePath)
+		raise Exception("File not exist: " + fileAbsolutePath)
     #end
 
 	file : typing.TextIO  = open(fileAbsolutePath,_READ_FILE_MODE,encoding="ISO-8859-1")
@@ -44,4 +45,12 @@ def isBinaryFile(filePath:str) -> bool:
 		(float(binaryLength) / dataLength) >= _CHAR_THRESHOLD
 	)
 
+#end
+
+def main(args : list[str]) -> None:
+	print("work in progress")
+#end
+
+if (__name__ == "__main__"):
+    main(sys.argv)
 #end

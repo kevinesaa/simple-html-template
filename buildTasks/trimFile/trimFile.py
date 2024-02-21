@@ -1,6 +1,5 @@
 import sys
 import os
-import mimetypes
 import typing
 
 from buildTasks.isBinaryFile.isBinaryFile import isBinaryFile
@@ -16,7 +15,7 @@ _CARRY_RETURN : str = "\r"
 _READ_FILE_MODE : str = "r"
 _WRITE_FILE_MODE : str = "w"
 
-def trimFile(file : str, endLinePostTrim:str = _EMPTY) -> None:
+def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY) -> None:
     
     file = os.path.abspath(os.path.normpath(file))
     if (not os.path.exists(file)):
@@ -30,21 +29,16 @@ def trimFile(file : str, endLinePostTrim:str = _EMPTY) -> None:
             trimFile(filePath)
         #end
     #end
-    type : tuple[str | None, str | None] = mimetypes.guess_type(file)
 
-    #if(os.path.isfile(file) and not isBinaryFile(file) ):
-    #   print(file)
-        
-
-    if(os.path.isfile(file) and type[0] and type[0].startswith("text")):
-
+    if(os.path.isfile(file) and not isBinaryFile(file) ):
+    
         bufferOut : list[str] = []
         buffer : typing.TextIO = open(file, _READ_FILE_MODE)
         
         for line in buffer: # undercover it is using something like buffer.readLine()
             subline : str = line.strip()
             if(len(subline) > 1 or ( len(subline) == 1 and subline not in(_BLANK,_TAB,_BREK_LINE,_CARRY_RETURN) )):
-                subline = subline + endLinePostTrim
+                subline = prefixTrimLine + subline + suffixTrimLine
                 bufferOut.append(subline) 
             #end
         #end
@@ -58,10 +52,14 @@ def trimFile(file : str, endLinePostTrim:str = _EMPTY) -> None:
     #end
 #end
 
-if (__name__ == "__main__"):
+def main(args : list[str]) -> None:
     
     if(len(sys.argv) != 2):
         raise Exception("no valid arguments lenght")
     #end
     trimFile(sys.argv[1])
+#end
+
+if (__name__ == "__main__"):
+    main(sys.argv)
 #end

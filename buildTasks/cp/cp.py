@@ -50,12 +50,17 @@ def cp(sourcePath : str, destPath : str ) -> None:
         shutil.copy(sourcePath,destPath)
     #end
 #end
-                
-if __name__ == "__main__":
+
+def main(args : list[str]) -> None:
     if(len(sys.argv) < 3):
         raise Exception("no valid arguments lenght")
     myArgs = sys.argv[1:]
     if(len(myArgs) > 2):
         raise Exception("no valid arguments lenght. To many arguments")
     cp(myArgs[0],myArgs[1])
+
+#end
+
+if __name__ == "__main__":
+    main(sys.argv)
 #end

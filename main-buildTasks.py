@@ -8,7 +8,7 @@ DIST_DIR : str = os.path.abspath("dist/")
 if __name__ == "__main__":
 
     cp(SOURCE_DIR, DIST_DIR)
-    trimFile.trimFile(DIST_DIR,trimFile._BREK_LINE)
+    trimFile.trimFile(DIST_DIR,suffixTrimLine=trimFile._BREK_LINE)
 
 #end
      
