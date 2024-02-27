@@ -11,6 +11,8 @@ _TAB : str = "\t"
 _BREK_LINE : str = "\n"
 _CARRY_RETURN : str = "\r"
 
+_END_LINE_ARRAY : list[str] = [_EMPTY,_BLANK,_TAB,_BREK_LINE, _CARRY_RETURN]
+
 # file open modes
 _READ_FILE_MODE : str = "r"
 _WRITE_FILE_MODE : str = "w"
@@ -25,7 +27,7 @@ def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY
     if(os.path.isdir(file)):
         sfiles : list[str] = os.listdir(file)
         for f in sfiles:
-            filePath = os.path.join(file,f)
+            filePath : str = os.path.join(file,f)
             trimFile(filePath)
         #end
     #end
@@ -37,7 +39,7 @@ def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY
         
         for line in buffer: # undercover it is using something like buffer.readLine()
             subline : str = line.strip()
-            if(len(subline) > 1 or ( len(subline) == 1 and subline not in(_BLANK,_TAB,_BREK_LINE,_CARRY_RETURN) )):
+            if(len(subline) > 1 or ( len(subline) == 1 and subline not in(_END_LINE_ARRAY) )):
                 subline = prefixTrimLine + subline + suffixTrimLine
                 bufferOut.append(subline) 
             #end

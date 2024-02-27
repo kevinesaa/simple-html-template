@@ -12,7 +12,7 @@ _TEXT_CHARACTERS : str = ''.join(
 )
 
 
-def isBinaryFile(filePath:str) -> bool:
+def isBinaryFile(filePath : str) -> bool:
 	
 	fileAbsolutePath : str = os.path.abspath(os.path.normpath(filePath))
 	if (not os.path.exists(fileAbsolutePath)):
@@ -20,7 +20,7 @@ def isBinaryFile(filePath:str) -> bool:
     #end
 
 	file : typing.TextIO  = open(fileAbsolutePath,_READ_FILE_MODE,encoding="ISO-8859-1")
-	fileHeaderData = file.read(_READ_BYTES)
+	fileHeaderData : str = file.read(_READ_BYTES)
 	file.close()
 
 	# store chunk length read
