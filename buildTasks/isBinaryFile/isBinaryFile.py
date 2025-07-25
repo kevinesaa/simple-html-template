@@ -7,8 +7,7 @@ _NULL_CHARACTER : str = '\x00'
 _READ_BYTES : int = 512
 _CHAR_THRESHOLD : float = 0.3
 _TEXT_CHARACTERS : str = ''.join(
-	[chr(code) for code in range(32,127)] +
-	list('\b\f\n\r\t')
+	[ chr(code) for code in range(32,127) ].extend( list('\b\f\n\r\t') )
 )
 
 
