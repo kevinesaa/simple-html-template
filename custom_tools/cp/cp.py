@@ -1,8 +1,8 @@
-import sys
 import os
 import shutil
+from .._commons import constants
 
-_LAST_INDEX : int = -1
+__LAST_INDEX : int = constants.DEFAULT_LAST_ARRAY_INDEX
 
 def cp(sourcePath : str, destPath : str ) -> None: 
     
@@ -11,7 +11,7 @@ def cp(sourcePath : str, destPath : str ) -> None:
     if (destPathExist):
         destPathIsDir = os.path.isdir(destPath)
     else: 
-        destPathIsDir = (destPath[_LAST_INDEX] == "/") or (destPath[_LAST_INDEX] == "\\")
+        destPathIsDir = ( destPath[__LAST_INDEX] == os.sep )
     #end
 
     sourcePath = os.path.abspath(os.path.normpath(sourcePath))
@@ -51,12 +51,15 @@ def cp(sourcePath : str, destPath : str ) -> None:
     #end
 #end
 
-def execute(args : list[str]) -> None:
-    if(len(sys.argv) < 3):
-        raise Exception("no valid arguments lenght")
-    myArgs = sys.argv[1:]
-    if(len(myArgs) > 2):
-        raise Exception("no valid arguments lenght. To many arguments")
-    cp(myArgs[0],myArgs[1])
+def execute(input : dict[str,list[str]]) -> None:
+    """
+    input example: {"params":["index.html", "index_copy.html"]}
+    """
+    args = input["params"]
+    
+    if(len(args) != 2):
+        raise Exception("no valid params lenght")
+    
+    cp(args[0],args[1])
 
 #end

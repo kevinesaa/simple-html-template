@@ -1,9 +1,11 @@
+# https://stackoverflow.com/questions/7610001/what-is-the-purpose-of-the-m-switch/62923810#62923810
+# when use from command line
+# execute with python -m custom_tools <program_name> <args>
+# example: python -m custom_tools cp file.txt folder/file.txt
+
 
 import sys
-from cp import cp
-
-
-PROGRAMS = { "cp" : cp }
+from . import programs
 
 def addToArray(arr:list,element):
     if(arr is None):
@@ -32,21 +34,25 @@ def buildProgramArgs(args):
 
     return output
 
-def main(args: list[str]):
+def main(args:list[str], programs:dict[str,object]):
 
     program_name = args[0]
-    program = PROGRAMS[program_name]
+    program = programs[program_name]
     program_args = None
     if( len(args) > 1 ):
         input_temp = args[1:]
         program_args = buildProgramArgs(input_temp)
     
-    program.execute(program_args)
+    return program.execute(program_args)
 
 
 if (__name__ == "__main__"):
-    print(sys.argv)
+    
+    PROGRAMS = programs.buildPrograms()
     if( len(sys.argv ) > 1):
-        main( sys.argv[1:])
+        result = main( sys.argv[1:],PROGRAMS)
+        if (result is not None):
+            print (result)
     else:
+        # todo print programs help lines
         pass
