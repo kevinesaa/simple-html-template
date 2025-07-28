@@ -1,14 +1,13 @@
 import os
-import sys
 import typing
 
 _READ_FILE_MODE : str = "r"
 _NULL_CHARACTER : str = '\x00'
 _READ_BYTES : int = 512
 _CHAR_THRESHOLD : float = 0.3
-_TEXT_CHARACTERS : str = ''.join(
-	[ chr(code) for code in range(32,127) ].extend( list('\b\f\n\r\t') )
-)
+_TEXT_CHARACTERS : str = ''.join (
+	[ chr(code) for code in range(32,127) ]
+).join( list('\b\f\n\r\t') )
 
 
 def isBinaryFile(filePath : str) -> bool:
@@ -46,10 +45,7 @@ def isBinaryFile(filePath : str) -> bool:
 
 #end
 
-def main(args : list[str]) -> None:
+def execute(input : dict[str,list[str]]) -> None:
 	print("work in progress")
 #end
 
-if (__name__ == "__main__"):
-    main(sys.argv)
-#end

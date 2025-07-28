@@ -15,7 +15,6 @@ class EndLineCharacter(Enum):
     def __init__(self, value, characterStr:str) -> None:
         super().__init__(self, value)
         self.__characterStr = characterStr
-        # EndLineCharacter.__ALL_END_LINE_CHARACTERS_ARRAY.append(characterStr)
     #end
 
     def getCharacterStr(self) -> str:
@@ -24,5 +23,10 @@ class EndLineCharacter(Enum):
     #end
 
     def getAllCharactersArray() -> list[str]:
+        
+        if( len(EndLineCharacter.__ALL_END_LINE_CHARACTERS_ARRAY) == 0): 
+            values = [ item.getCharacterStr() for item in EndLineCharacter ]
+            EndLineCharacter.__ALL_END_LINE_CHARACTERS_ARRAY = values
+
         return EndLineCharacter.__ALL_END_LINE_CHARACTERS_ARRAY
     #end

@@ -1,23 +1,21 @@
-import sys
+
 import os
 import typing
 
-from custom_tools.isBinaryFile.isBinaryFile import isBinaryFile
+from .._commons.EndLineCharacter import EndLineCharacter
+from .._commons.FileOpenMode import FileOpenMode
+from ..isBinaryFile.isBinaryFile import isBinaryFile
 
 # file default break endline
-_EMPTY : str = ""
-_BLANK : str = " "
-_TAB : str = "\t"
-_BREK_LINE : str = "\n"
-_CARRY_RETURN : str = "\r"
+__EMPTY : str = EndLineCharacter.EMPTY.getCharacterStr()
 
-_END_LINE_ARRAY : list[str] = [_EMPTY,_BLANK,_TAB,_BREK_LINE, _CARRY_RETURN]
+__END_LINE_ARRAY : list[str] = EndLineCharacter.getAllCharactersArray()
 
 # file open modes
-_READ_FILE_MODE : str = "r"
-_WRITE_FILE_MODE : str = "w"
+__READ_FILE_MODE : str = FileOpenMode.READ_FILE_MODE.getReadModeStr()
+__WRITE_FILE_MODE : str = FileOpenMode.WRITE_FILE_MODE.getReadModeStr()
 
-def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY) -> None:
+def trimFile(file : str,prefixTrimLine:str = __EMPTY, suffixTrimLine:str = __EMPTY) -> None:
     
     file = os.path.abspath(os.path.normpath(file))
     if (not os.path.exists(file)):
@@ -35,18 +33,18 @@ def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY
     if(os.path.isfile(file) and not isBinaryFile(file) ):
     
         bufferOut : list[str] = []
-        buffer : typing.TextIO = open(file, _READ_FILE_MODE)
+        buffer : typing.TextIO = open(file, __READ_FILE_MODE)
         
         for line in buffer: # undercover it is using something like buffer.readLine()
             subline : str = line.strip()
-            if(len(subline) > 1 or ( len(subline) == 1 and subline not in(_END_LINE_ARRAY) )):
+            if(len(subline) > 1 or ( len(subline) == 1 and subline not in(__END_LINE_ARRAY) )):
                 subline = prefixTrimLine + subline + suffixTrimLine
                 bufferOut.append(subline) 
             #end
         #end
         buffer.close() 
         if (len(bufferOut) > 0):
-            buffer = open(file, _WRITE_FILE_MODE)
+            buffer = open(file, __WRITE_FILE_MODE)
             buffer.writelines(bufferOut)
             buffer.close() 
         #end
@@ -54,14 +52,13 @@ def trimFile(file : str,prefixTrimLine:str = _EMPTY, suffixTrimLine:str = _EMPTY
     #end
 #end
 
-def main(args : list[str]) -> None:
+def execute(input : dict[str,list[str]]) -> None:
+    """
     
-    if(len(sys.argv) != 2):
-        raise Exception("no valid arguments lenght")
-    #end
-    trimFile(sys.argv[1])
+    input example: {"params":["index.html"]}
+    """
+    
+    args = input["params"]
+    trimFile(args[0])
 #end
 
-if (__name__ == "__main__"):
-    main(sys.argv)
-#end
