@@ -43,14 +43,16 @@ def main(args:list[str], programs:dict[str,object]):
         input_temp = args[1:]
         program_args = buildProgramArgs(input_temp)
     
-    program.execute(program_args)
+    return program.execute(program_args)
 
 
 if (__name__ == "__main__"):
     
     PROGRAMS = programs.buildPrograms()
     if( len(sys.argv ) > 1):
-        main( sys.argv[1:],PROGRAMS)
+        result = main( sys.argv[1:],PROGRAMS)
+        if (result is not None):
+            print (result)
     else:
-        
+        # todo print programs help lines
         pass
