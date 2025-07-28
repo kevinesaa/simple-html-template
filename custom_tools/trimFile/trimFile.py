@@ -2,7 +2,7 @@ import sys
 import os
 import typing
 
-from buildTasks.isBinaryFile.isBinaryFile import isBinaryFile
+from custom_tools.isBinaryFile.isBinaryFile import isBinaryFile
 
 # file default break endline
 _EMPTY : str = ""

@@ -1,6 +1,6 @@
 
 import sys
-from cp import cp
+from custom_tools import cp
 
 
 PROGRAMS = { "cp" : cp }
@@ -45,7 +45,7 @@ def main(args: list[str]):
 
 
 if (__name__ == "__main__"):
-    print(sys.argv)
+    
     if( len(sys.argv ) > 1):
         main( sys.argv[1:])
     else:

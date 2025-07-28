@@ -1,0 +1,2 @@
+
+DEFAULT_LAST_ARRAY_INDEX : int = -1

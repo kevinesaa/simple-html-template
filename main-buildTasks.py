@@ -1,6 +1,6 @@
 import os
-from buildTasks.cp.cp import cp
-from buildTasks.trimFile import trimFile
+from custom_tools.cp.cp import cp
+from custom_tools.trimFile import trimFile
 
 SOURCE_DIR : str = os.path.abspath("src/")
 DIST_DIR : str = os.path.abspath("dist/")
