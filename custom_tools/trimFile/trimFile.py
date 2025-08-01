@@ -26,7 +26,7 @@ def trimFile(file : str,prefixTrimLine:str = __EMPTY, suffixTrimLine:str = __EMP
         sfiles : list[str] = os.listdir(file)
         for f in sfiles:
             filePath : str = os.path.join(file,f)
-            trimFile(filePath)
+            trimFile(filePath,prefixTrimLine,suffixTrimLine)
         #end
     #end
 
